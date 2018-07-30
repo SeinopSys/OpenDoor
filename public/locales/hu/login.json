@@ -1,0 +1,10 @@
+{
+  "log_in": "Bejelentkezés",
+  "reg_pls": [
+    "Ha még nincs fiókod, itt az ideje, hogy ",
+    "!"
+  ],
+  "reg_link": "regisztrálj",
+  "authenticating": "Azonosítás",
+  "forgot_pw": "Elfelejtetted a jelszavad?"
+}

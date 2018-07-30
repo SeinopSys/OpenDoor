@@ -1,0 +1,10 @@
+{
+  "log_in": "Log in",
+  "reg_pls": [
+    "If you don't have an account, ",
+    "!"
+  ],
+  "reg_link": "register now",
+  "authenticating": "Authenticating",
+  "forgot_pw": "Forgot your password?"
+}

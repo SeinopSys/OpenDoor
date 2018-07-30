@@ -1,0 +1,6 @@
+{
+  "name": "Felhasználónév",
+  "email": "E-Mail Cím",
+  "password": "Jelszó",
+  "password_confirmation": "Jelszó Megerősítése"
+}
