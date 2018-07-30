@@ -13,6 +13,7 @@ import NavLink from "./navLink";
 import NavLogoutLink from "./navLogoutLink";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
+import OpenIconic from "./openIconic";
 
 const translationNamespaces = [
   "login", "register", "global",
@@ -50,6 +51,7 @@ class Page extends React.Component {
             <Nav navbar>
               <NavItem>
                 <NavLink to="/">
+                  <OpenIconic icon="dashboard" />
                   {t("global:nav.overview")}
                 </NavLink>
               </NavItem>
@@ -61,11 +63,13 @@ class Page extends React.Component {
             <Nav navbar>
               <NavItem>
                 <NavLink to="/login">
+                  <OpenIconic icon="account-login" />
                   {t("login:log_in")}
                 </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to="/register">
+                  <OpenIconic icon="person" />
                   {t("register:sign_up")}
                 </NavLink>
               </NavItem>

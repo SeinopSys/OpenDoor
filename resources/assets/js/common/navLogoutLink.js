@@ -4,6 +4,7 @@ import ConfirmModal from "./modals/confirm";
 import { translate } from 'react-i18next';
 import * as actions from "../store/actions";
 import { connect } from "react-redux";
+import OpenIconic from "./openIconic";
 
 const translationNamespaces = [
   "global",
@@ -31,6 +32,7 @@ class NavLogoutLink extends React.Component {
     return (
       <div>
         <NavLink href="#" onClick={this.handleClick}>
+          <OpenIconic icon="account-logout" />
           {t("global:nav.log_out")}
         </NavLink>
         <ConfirmModal ref={this.modal} body={t("global:nav.log_out_confirm")} onConfirm={this.handleConfirm} />
