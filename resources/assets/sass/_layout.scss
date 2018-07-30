@@ -27,8 +27,14 @@ noscript {
   }
 }
 
-.nav-link .oi {
-  margin-right: 7px;
+.nav-link {
+  &.active {
+    border-radius: 2em;
+    background: rgba(black, .07);
+  }
+  .oi {
+    margin-right: 7px;
+  }
 }
 
 main {

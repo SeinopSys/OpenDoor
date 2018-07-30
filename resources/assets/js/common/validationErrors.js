@@ -12,4 +12,6 @@ class ValidationErrors {
   }
 }
 
+export const responseIsValidationError = errorMessage => errorMessage === "The given data was invalid.";
+
 export default ValidationErrors;

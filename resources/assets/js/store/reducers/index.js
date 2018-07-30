@@ -1,9 +1,14 @@
 import { combineReducers } from "redux";
-import Auth from "./Auth";
+import auth from "./auth";
 import persistStore from "./persistStore";
-import { loadingBarReducer } from 'react-redux-loading-bar';
 import { dialogReducer } from 'redux-reactstrap-modal';
+import stashes from './stashes';
 
-const RootReducer = combineReducers({ Auth, persistStore, loadingBar: loadingBarReducer, dialogReducer });
+const RootReducer = combineReducers({
+  auth,
+  persistStore,
+  dialogReducer,
+  stashes,
+});
 
 export default RootReducer;

@@ -1,5 +1,7 @@
 import * as ActionTypes from "../action-types";
 
+
+// Auth
 export function authLogin(payload) {
   return {
     type: ActionTypes.AUTH_LOGIN,
@@ -7,6 +9,12 @@ export function authLogin(payload) {
   };
 }
 
+export function authUser(payload) {
+  return {
+    type: ActionTypes.AUTH_USER,
+    payload
+  };
+}
 
 export function authLogout() {
   return {
@@ -14,8 +22,10 @@ export function authLogout() {
   };
 }
 
-export function authCheck() {
+// Stashes
+export function loadStashes(payload){
   return {
-    type: ActionTypes.AUTH_CHECK
+    type: ActionTypes.STASHES_LOAD,
+    payload
   };
 }

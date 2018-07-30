@@ -1,0 +1,7 @@
+{
+  "stashes": {
+    "title": "Your Stashes",
+    "loading": "Loading stashes, please wait",
+    "empty": "You have no stashes yet."
+  }
+}

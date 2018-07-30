@@ -1,5 +1,5 @@
-import React from "react";
-import NavLink from "./navLink";
+import React, { Fragment } from "react";
+import { DropdownItem } from "reactstrap";
 import ConfirmModal from "./modals/confirm";
 import { translate } from 'react-i18next';
 import * as actions from "../store/actions";
@@ -22,7 +22,8 @@ class NavLogoutLink extends React.Component {
     this.props.dispatch(actions.authLogout());
   }
 
-  handleClick(){
+  handleClick(e){
+    e.preventDefault();
     this.modal.current.getWrappedInstance().open();
   }
 
@@ -30,20 +31,19 @@ class NavLogoutLink extends React.Component {
     const { t } = this.props;
 
     return (
-      <div>
-        <NavLink href="#" onClick={this.handleClick}>
-          <OpenIconic icon="account-logout" />
-          {t("global:nav.log_out")}
-        </NavLink>
+      <Fragment>
+        <DropdownItem href="#" onClick={this.handleClick}>
+          <OpenIconic icon="account-logout" /> {t("global:nav.log_out")}
+        </DropdownItem>
         <ConfirmModal ref={this.modal} body={t("global:nav.log_out_confirm")} onConfirm={this.handleConfirm} />
-      </div>
+      </Fragment>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.Auth.isAuthenticated,
+    isAuthenticated: state.auth.isAuthenticated,
   };
 };
 

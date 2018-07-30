@@ -6,7 +6,11 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem
+  NavItem,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 import { connect } from "react-redux";
 import NavLink from "./navLink";
@@ -14,6 +18,7 @@ import NavLogoutLink from "./navLogoutLink";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import OpenIconic from "./openIconic";
+import Gravatar from "react-gravatar";
 
 const translationNamespaces = [
   "login", "register", "global",
@@ -24,8 +29,10 @@ class Page extends React.Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.dropdownToggle = this.dropdownToggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      isDropdownOpen: false,
     };
   }
 
@@ -35,8 +42,14 @@ class Page extends React.Component {
     });
   }
 
+  dropdownToggle() {
+    this.setState({
+      isDropdownOpen: !this.state.isDropdownOpen
+    });
+  }
+
   render() {
-    const { t } = this.props;
+    const { t, isAuthenticated, user } = this.props;
 
     return (
       <Navbar expand="sm" light>
@@ -45,21 +58,30 @@ class Page extends React.Component {
           <span className="d-none d-sm-inline-block brand-name">OpenDoor</span>
         </NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
-        <Collapse isOpen={this.state.isOpen} navbar>
-          {this.props.isAuthenticated
-            ?
-            <Nav navbar>
+        {isAuthenticated
+          ?
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav navbar className="mr-auto">
               <NavItem>
                 <NavLink to="/">
                   <OpenIconic icon="dashboard" />
                   {t("global:nav.overview")}
                 </NavLink>
               </NavItem>
-              <NavItem>
-                <NavLogoutLink />
-              </NavItem>
             </Nav>
-            :
+            <Nav navbar>
+              <Dropdown toggle={this.dropdownToggle} isOpen={this.state.isDropdownOpen} inNavbar>
+                <DropdownToggle nav caret>
+                  <Gravatar email={user.email} size={24} /> {user.name}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem tag={NavLogoutLink} />
+                </DropdownMenu>
+              </Dropdown>
+            </Nav>
+          </Collapse>
+          :
+          <Collapse isOpen={this.state.isOpen} navbar>
             <Nav navbar>
               <NavItem>
                 <NavLink to="/login">
@@ -74,8 +96,8 @@ class Page extends React.Component {
                 </NavLink>
               </NavItem>
             </Nav>
-          }
-        </Collapse>
+          </Collapse>
+        }
       </Navbar>
     );
   }
@@ -89,8 +111,8 @@ Page.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.Auth.isAuthenticated,
-    user: state.Auth.user,
+    isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user,
   };
 };
 

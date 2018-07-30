@@ -31,12 +31,12 @@ class Register extends React.Component {
         name: "",
         email: "",
         password: "",
-        password_confirmation: ""
+        password_confirmation: "",
       },
       responseError: {
         isError: false,
         code: "",
-        text: ""
+        text: "",
       },
       isLoading: false,
       validationErrors: new ValidationErrors,
@@ -237,7 +237,7 @@ Register.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.Auth.isAuthenticated,
+    isAuthenticated: state.auth.isAuthenticated,
   };
 };
 

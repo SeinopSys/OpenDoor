@@ -1,13 +1,11 @@
-import Http from "../axios";
+import axios from "../axios";
 import * as action from "../store/actions";
-import ValidationErrors from "../common/validationErrors";
-
-export const responseIsValidationError = errorMessage => errorMessage === "The given data was invalid.";
+import ValidationErrors, { responseIsValidationError } from "../common/validationErrors";
 
 export function login(credentials) {
   return dispatch => (
     new Promise((resolve, reject) => {
-      Http.post("/api/auth/login", credentials)
+      axios.post("/api/auth/login", credentials)
         .then(res => {
           dispatch(action.authLogin(res.data));
           return resolve();
@@ -32,7 +30,7 @@ export function login(credentials) {
 export function register(credentials) {
   return dispatch => (
     new Promise((resolve, reject) => {
-      Http.post("/api/auth/register", credentials)
+      axios.post("/api/auth/register", credentials)
         .then(res => {
           dispatch(action.authLogin(res.data));
           return resolve();
@@ -54,10 +52,10 @@ export function register(credentials) {
   );
 }
 
-export function userInfo(credentials) {
+export function userInfo() {
   return dispatch => (
     new Promise((resolve, reject) => {
-      Http.post("/api/auth/me", credentials)
+      axios.post("/api/auth/me")
         .then(res => {
           return resolve(res.data);
         })
@@ -76,4 +74,44 @@ export function userInfo(credentials) {
         });
     })
   );
+}
+
+
+export const JWT_LS_KEY = "jwt_token";
+export const setJWT = token => {
+  console.warn('TOKEN SET', token);
+  localStorage.setItem(JWT_LS_KEY, token);
+  setAuthorizationHeader(token);
+};
+export const getJWT = () => localStorage.getItem(JWT_LS_KEY);
+export const removeJWT = () => {
+  console.warn("TOKEN REMOVED");
+  localStorage.removeItem(JWT_LS_KEY);
+};
+export const setAuthorizationHeader = (token) => {
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+};
+const authCheck = () => {
+  const jwtToken = getJWT();
+  console.log(jwtToken);
+  if (jwtToken) {
+    setAuthorizationHeader(jwtToken);
+  }
+};
+
+export function validateToken() {
+  return dispatch => {
+    authCheck();
+    return new Promise((resolve) => {
+      axios.post("/api/auth/check")
+        .then(res => {
+          dispatch(action.authUser(res.data));
+          return resolve();
+        })
+        .catch(() => {
+          //dispatch(action.authLogout());
+          return;
+        });
+    });
+  };
 }

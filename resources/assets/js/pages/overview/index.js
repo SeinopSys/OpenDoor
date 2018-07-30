@@ -1,12 +1,17 @@
-import { connect } from "react-redux";
 import React from "react";
+import {
+  Row,
+  Col,
+} from "reactstrap";
+import { connect } from "react-redux";
 import { translate } from "react-i18next";
+import Stashes from "./stashes";
 
 const translationNamespaces = [
   "global",
 ];
 
-class Page extends React.Component {
+class Overview extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -14,9 +19,14 @@ class Page extends React.Component {
   render() {
     const { t } = this.props;
     return (
-      <h1>{t("global:nav.overview")}</h1>
+      <Row>
+        <Col>
+          <h1>{t("global:nav.overview")}</h1>
+          <Stashes />
+        </Col>
+      </Row>
     );
   }
 }
 
-export default connect()(translate(translationNamespaces)(Page));
+export default connect()(translate(translationNamespaces)(Overview));

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Stash;
 use App\Http\Resources\StashResource;
+use App\User;
 
 
 class StashController extends Controller
@@ -16,7 +17,11 @@ class StashController extends Controller
 
     public function index()
     {
-        return StashResource::collection(Stash::with('ratings')->paginate(25));
+        /** @var $user User */
+        $user = auth()->user();
+        return response()->json([
+            'stashes' => StashResource::collection($user->stashes()->get()),
+        ]);
     }
 
     public function store(Request $request)

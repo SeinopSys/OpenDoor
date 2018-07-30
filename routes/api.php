@@ -15,9 +15,8 @@ use Illuminate\Http\Request;
 Route::group([ 'prefix' => 'auth' ], function ($router) {
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
-    Route::post('refresh', 'AuthController@refresh');
+    Route::post('check', 'AuthController@check');
     Route::get('me', 'AuthController@me');
 });
 
-
-//Route::apiResource('stash', 'StashController');
+Route::apiResource('stash', 'StashController');

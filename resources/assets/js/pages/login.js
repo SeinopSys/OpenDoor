@@ -28,12 +28,12 @@ class Login extends React.Component {
     this.state = {
       credentials: {
         email: "",
-        password: ""
+        password: "",
       },
       responseError: {
         isError: false,
         code: "",
-        text: ""
+        text: "",
       },
       isLoading: false,
     };
@@ -165,7 +165,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.Auth.isAuthenticated,
+    isAuthenticated: state.auth.isAuthenticated,
   };
 };
 

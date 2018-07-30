@@ -38,7 +38,6 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            # TODO Translate
             return response()->json(['message' => trans('login.errors.invalid_credentials')], 401);
         }
 
@@ -65,6 +64,18 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json(new UserResource(auth()->user()));
+    }
+
+    /**
+     * Get the authenticated User.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function check()
+    {
+        return response()->json([
+            'user' => new UserResource(auth()->user()),
+        ]);
     }
 
     protected function respondWithToken($token)
