@@ -30,7 +30,6 @@ class Stash extends Model
     const STASH_TYPES = [
         'cash' => true,
         'bank_account' => true,
-        'paypal' => true,
     ];
 
     public $incrementing = false;

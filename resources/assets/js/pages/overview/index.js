@@ -5,7 +5,7 @@ import {
 } from "reactstrap";
 import { connect } from "react-redux";
 import { translate } from "react-i18next";
-import Stashes from "./stashes";
+import Stashes from "./_stashes";
 
 const translationNamespaces = [
   "global",

@@ -40,7 +40,7 @@ class ConfirmModal extends React.Component {
     const { t, body, title } = this.props;
 
     return (
-      <Modal isOpen={this.state.open}>
+      <Modal isOpen={this.state.open} backdrop="static">
         <ModalHeader className="bg-warning">{title || t("global:confirm_title")}</ModalHeader>
         <ModalBody className="text-center">{body}</ModalBody>
         <ModalFooter className="justify-content-center">

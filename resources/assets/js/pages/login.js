@@ -17,6 +17,7 @@ import PageHeading from "../common/pageHeading";
 import { translate } from "react-i18next";
 import OpenIconic from "../common/openIconic";
 import ValidationErrors from "../common/validationErrors";
+import * as action from "../store/actions";
 
 const translationNamespaces = [
   "login", "validation-attrs",
@@ -90,10 +91,15 @@ class Login extends React.Component {
     this.setState({
       isLoading: false
     });
+    this.props.dispatch(action.updateTitle(this.props.t("login:log_in")));
+  }
+
+  componentWillUnmount(){
+    this.props.dispatch(action.updateTitle());
   }
 
   render() {
-    const { t, isAuthenticated } = this.props;
+    const { t, isAuthenticated, title } = this.props;
     const { from } = this.props.location.state || { from: { pathname: "/" } };
     if (isAuthenticated) {
       return <Redirect to={from} replace />;
@@ -102,16 +108,16 @@ class Login extends React.Component {
     const { credentials } = this.state;
 
     const encourage = [
-      t("login:reg_pls.0"),
-      t("login:reg_pls.1"),
+      t("login:signup_pls.0"),
+      t("login:signup_pls.1"),
     ];
 
     return (
       <Row className="justify-content-md-center">
         <Col md="4">
-          <PageHeading heading={t("login:log_in")} />
+          <PageHeading heading={title} />
 
-          <p>{encourage[0]}<Link to="/register">{t("login:reg_link")}</Link>{encourage[1]}</p>
+          <p className="text-center">{encourage[0]}<Link to="/signup">{t("login:signup_link")}</Link>{encourage[1]}</p>
 
           {this.state.responseError.isError &&
           <Alert color="danger">
@@ -163,10 +169,11 @@ Login.propTypes = {
   location: PropTypes.object,
 };
 
-const mapStateToProps = (state) => {
-  return {
+const mapStateToProps = (state) => (
+  {
     isAuthenticated: state.auth.isAuthenticated,
-  };
-};
+    title: state.nav.title,
+  }
+);
 
 export default connect(mapStateToProps)(translate(translationNamespaces)(Login));

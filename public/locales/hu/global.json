@@ -13,5 +13,10 @@
   },
   "confirm": "Megerősít",
   "confirm_title": "Művelet megerősítése",
-  "cancel": "Mégse"
+  "cancel": "Mégse",
+  "save": "Ment",
+  "saving": "Mentés",
+  "create": "Létrehoz",
+  "creating": "Létrehozás",
+  "select_placeholder": "Choose one"
 }

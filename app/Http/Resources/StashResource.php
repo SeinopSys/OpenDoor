@@ -18,7 +18,7 @@ class StashResource extends JsonResource
             'id' => $this->id,
             'label' => $this->label,
             'type' => $this->type,
-            'user' => $this->user(),
+            'balances' => $this->balances(),
         ];
     }
 }

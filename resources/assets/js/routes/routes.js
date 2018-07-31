@@ -1,15 +1,11 @@
 import Overview from "../pages/overview";
 import Login from "../pages/login";
-import Register from "../pages/register";
+import Signup from "../pages/signup";
 import NoMatch from "../pages/noMatch";
+import StashesForm from "../pages/stashes/form";
 
 const routes = [
-  {
-    path: "/",
-    exact: true,
-    auth: true,
-    component: Overview
-  },
+  // Public
   {
     path: "/login",
     exact: true,
@@ -17,17 +13,37 @@ const routes = [
     component: Login
   },
   {
-    path: "/register",
+    path: "/signup",
     exact: true,
     auth: false,
-    component: Register
+    component: Signup
   },
+  // Private
+  {
+    path: "/",
+    exact: true,
+    auth: true,
+    component: Overview
+  },
+  {
+    path: "/stashes/new",
+    exact: true,
+    auth: true,
+    component: StashesForm
+  },
+  {
+    path: "/stashes/edit/:id",
+    exact: true,
+    auth: true,
+    component: StashesForm
+  },
+  // 404
   {
     path: "",
     exact: true,
     auth: false,
     component: NoMatch
-  }
+  },
 ];
 
 export default routes;

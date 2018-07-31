@@ -21,7 +21,7 @@ import OpenIconic from "./openIconic";
 import Gravatar from "react-gravatar";
 
 const translationNamespaces = [
-  "login", "register", "global",
+  "login", "signup", "global",
 ];
 
 class Page extends React.Component {
@@ -90,9 +90,9 @@ class Page extends React.Component {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to="/register">
+                <NavLink to="/signup">
                   <OpenIconic icon="person" />
-                  {t("register:sign_up")}
+                  {t("signup:sign_up")}
                 </NavLink>
               </NavItem>
             </Nav>

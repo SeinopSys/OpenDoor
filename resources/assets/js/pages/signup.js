@@ -19,11 +19,12 @@ import PageHeading from "../common/pageHeading";
 import { translate } from "react-i18next";
 import OpenIconic from "../common/openIconic";
 import ValidationErrors from "../common/validationErrors";
+import * as action from "../store/actions";
 const translationNamespaces = [
   "login", "validation-attrs",
 ];
 
-class Register extends React.Component {
+class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -96,6 +97,11 @@ class Register extends React.Component {
     this.setState({
       isLoading: false
     });
+    this.props.dispatch(action.updateTitle(this.props.t("signup:sign_up")));
+  }
+
+  componentWillUnmount(){
+    this.props.dispatch(action.updateTitle());
   }
 
   render() {
@@ -108,16 +114,16 @@ class Register extends React.Component {
     const passwordsDiffer = credentials.password !== credentials.password_confirmation;
 
     const encourage = [
-      t("register:log_in_pls.0"),
-      t("register:log_in_pls.1"),
+      t("signup:log_in_pls.0"),
+      t("signup:log_in_pls.1"),
     ];
 
     return (
       <Row className="justify-content-md-center">
         <Col md="4">
-          <PageHeading heading={t("register:sign_up")} />
+          <PageHeading heading={t("signup:sign_up")} />
 
-          <p>{encourage[0]}<Link to="/login">{t("register:log_in_link")}</Link>{encourage[1]}</p>
+          <p className="text-center">{encourage[0]}<Link to="/login">{t("signup:log_in_link")}</Link>{encourage[1]}</p>
 
           {responseError.isError &&
           <Alert color="danger">
@@ -147,7 +153,7 @@ class Register extends React.Component {
               </FormFeedback>
               }
               <FormText color="muted">
-                {t("register:specs.name")}
+                {t("signup:specs.name")}
               </FormText>
             </FormGroup>
             <FormGroup>
@@ -171,7 +177,7 @@ class Register extends React.Component {
               </FormFeedback>
               }
               <FormText color="muted">
-                {t("register:specs.email")}
+                {t("signup:specs.email")}
               </FormText>
             </FormGroup>
             <FormGroup>
@@ -195,7 +201,7 @@ class Register extends React.Component {
               </FormFeedback>
               }
               <FormText color="muted">
-                {t("register:specs.password")}
+                {t("signup:specs.password")}
               </FormText>
             </FormGroup>
             <FormGroup>
@@ -211,7 +217,7 @@ class Register extends React.Component {
               />
               {passwordsDiffer &&
               <FormFeedback valid={false} className="d-block">
-                {t("register:error.password_mismatch")}
+                {t("signup:error.password_mismatch")}
               </FormFeedback>
               }
             </FormGroup>
@@ -219,8 +225,8 @@ class Register extends React.Component {
             <Button color='primary' disabled={this.state.isLoading}>
               <OpenIconic icon="person" />
               {this.state.isLoading
-                ? <Fragment>{t("register:signing_up")}&hellip;</Fragment>
-                : t("register:sign_up")
+                ? <Fragment>{t("signup:signing_up")}&hellip;</Fragment>
+                : t("signup:sign_up")
               }
             </Button>
           </Form>
@@ -230,7 +236,7 @@ class Register extends React.Component {
   }
 }
 
-Register.propTypes = {
+Signup.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
@@ -241,4 +247,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(translate(translationNamespaces)(Register));
+export default connect(mapStateToProps)(translate(translationNamespaces)(Signup));

@@ -93,7 +93,6 @@ export const setAuthorizationHeader = (token) => {
 };
 const authCheck = () => {
   const jwtToken = getJWT();
-  console.log(jwtToken);
   if (jwtToken) {
     setAuthorizationHeader(jwtToken);
   }
