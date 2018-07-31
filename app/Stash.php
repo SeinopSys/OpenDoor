@@ -31,8 +31,11 @@ class Stash extends Model
         'cash' => true,
         'bank_account' => true,
     ];
+    const LABEL_MAX_LENGTH = 64;
 
     public $incrementing = false;
+
+    public $fillable = ['label'];
 
     public function user(){
         return $this->belongsTo(User::class);

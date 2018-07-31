@@ -133,7 +133,7 @@ class Signup extends React.Component {
 
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="name">{t("validation-attrs:name")}</Label>
+              <Label for="name">{t("validation:attributes.name")}</Label>
               <Input
                 type="text"
                 name="name"
@@ -142,6 +142,7 @@ class Signup extends React.Component {
                 value={credentials.name}
                 onChange={this.handleChange}
                 required
+                autoFocus
               />
               {validationErrors.has('name') &&
               <FormFeedback valid={false}>
@@ -157,7 +158,7 @@ class Signup extends React.Component {
               </FormText>
             </FormGroup>
             <FormGroup>
-              <Label for="email">{t("validation-attrs:email")}</Label>
+              <Label for="email">{t("validation:attributes.email")}</Label>
               <Input
                 type="email"
                 name="email"
@@ -181,7 +182,7 @@ class Signup extends React.Component {
               </FormText>
             </FormGroup>
             <FormGroup>
-              <Label for="password">{t("validation-attrs:password")}</Label>
+              <Label for="password">{t("validation:attributes.password")}</Label>
               <Input
                 type="password"
                 name="password"
@@ -205,7 +206,7 @@ class Signup extends React.Component {
               </FormText>
             </FormGroup>
             <FormGroup>
-              <Label for="password_confirmation">{t("validation-attrs:password_confirmation")}</Label>
+              <Label for="password_confirmation">{t("validation:attributes.password_confirmation")}</Label>
               <Input
                 type="password"
                 name="password_confirmation"

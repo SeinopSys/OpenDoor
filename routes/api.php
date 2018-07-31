@@ -22,4 +22,4 @@ Route::group([ 'prefix' => 'auth' ], function ($router) {
 Route::group([ 'prefix' => 'stash' ], function ($router) {
     Route::get('types', 'StashController@types');
 });
-Route::apiResource('stash', 'StashController');
+Route::resource('stash', 'StashController');

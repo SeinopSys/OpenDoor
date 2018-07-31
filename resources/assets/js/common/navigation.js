@@ -71,8 +71,10 @@ class Page extends React.Component {
             </Nav>
             <Nav navbar>
               <Dropdown toggle={this.dropdownToggle} isOpen={this.state.isDropdownOpen} inNavbar>
-                <DropdownToggle nav caret>
-                  <Gravatar email={user.email} size={24} /> {user.name}
+                <DropdownToggle nav className="d-flex flex-row align-items-center">
+                  <Gravatar email={user.email} size={24} className="rounded" />
+                  <span className="p-2">{user.name}</span>
+                  <OpenIconic icon="caret-bottom" />
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem tag={NavLogoutLink} />

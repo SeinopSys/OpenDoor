@@ -109,5 +109,12 @@ return [
     'letters' => 'The :attribute legalább egy betűt kell tartalmaznia.',
     'symbols' => 'The :attribute legalább egy szimbólumot kell tartalmaznia.',
 
-    'attributes' => json_decode(file_get_contents(public_path('locales/en/validation-attrs.json')), true),
+    'attributes' => [
+        'name' => 'Felhasználónév',
+        'email' => 'E-Mail Cím',
+        'password' => 'Jelszó',
+        'password_confirmation' => 'Jelszó Megerősítése',
+        'label' => 'Leírás',
+        'type' => 'Típus'
+    ],
 ];

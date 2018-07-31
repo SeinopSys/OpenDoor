@@ -5,6 +5,7 @@ import {
   Col
 } from "reactstrap";
 import { translate } from "react-i18next";
+import OpenIconic from "./openIconic";
 
 const translationNamespaces = [
   "global",
@@ -31,6 +32,9 @@ class Footer extends React.Component {
               <a href="https://reactjs.org/">React</a>
               <a href="https://redux.js.org/">Redux</a>
               <a href="https://useiconic.com/open">Open Iconic</a>
+              <a href="https://github.com/kirschbaum-development/laravel-translations-loader">
+                <OpenIconic icon="heart" /> <strong>laravel-translations-loader</strong>
+              </a>
               <a href="https://github.com/sumityadavbadli/react-laravel-with-jwt-auth/">react-laravel-with-jwt-auth</a>
               <a href="https://haveibeenpwned.com/Passwords">HaveIBeenPwned</a>
               <a href="https://currencylayer.com/">CurrencyLayer API (Free)</a>

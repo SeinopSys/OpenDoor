@@ -1,16 +1,14 @@
 import i18n from 'i18next';
-import XHR from 'i18next-xhr-backend';
 import { reactI18nextModule } from 'react-i18next';
+import languageBundle from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader';
 
 const lng = document.documentElement.lang;
 
 i18n
-  .use(XHR)
   .use(reactI18nextModule)
   .init({
     lng,
     fallbackLng: 'en',
-    defaultNs: 'global',
     //debug: process.env.NODE_ENV === 'development',
     interpolation: {
       // React already does escaping
@@ -19,6 +17,7 @@ i18n
     react: {
       wait: true,
     },
+    resources: languageBundle,
   });
 
 export default i18n;

@@ -100,8 +100,8 @@ class Login extends React.Component {
 
   render() {
     const { t, isAuthenticated, title } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
     if (isAuthenticated) {
+      const { from } = this.props.location.state || { from: { pathname: "/" } };
       return <Redirect to={from} replace />;
     }
 
@@ -127,18 +127,19 @@ class Login extends React.Component {
 
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="email">{t("validation-attrs:email")}</Label>
+              <Label for="email">{t("validation:attributes.email")}</Label>
               <Input
                 type="email"
                 name="email"
                 id="email"
                 required
+                autoFocus
                 value={credentials.email}
                 onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
-              <Label for="password">{t("validation-attrs:password")}</Label>
+              <Label for="password">{t("validation:attributes.password")}</Label>
               <Input
                 type="password"
                 name="password"

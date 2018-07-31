@@ -4,10 +4,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StashStore;
+use App\Http\Requests\StashUpdate;
 use App\Stash;
 use App\Http\Resources\StashResource;
 use App\User;
+use Illuminate\Http\Request;
 
+sleep(1);
 
 class StashController extends Controller
 {
@@ -27,10 +30,13 @@ class StashController extends Controller
 
     public function store(StashStore $request)
     {
+        $data = $request->validated();
+
         $stash = new Stash();
-        $stash->user_id = $request->user()->id;
-        $stash->label = $request->label;
-        $stash->type = $request->type;
+        $stash->user_id = auth()->user()->id;
+        $stash->label = $data['label'];
+        $stash->type = $data['type'];
+        $stash->save();
 
         return response()->json([
             'stash' => new StashResource($stash)
@@ -44,14 +50,14 @@ class StashController extends Controller
         ]);
     }
 
-    public function update(Request $request, Stash $stash)
+    public function update(StashUpdate $request, Stash $stash)
     {
-        if ($request->user()->id !== $stash->user_id) {
+        if (auth()->user()->id !== $stash->user_id) {
             # TODO Translate
             return response()->json(['error' => 'You can only edit your own stashes.'], 403);
         }
 
-        $stash->update($request->only(['label']));
+        $stash->update($request->validated());
 
         return response()->json([
             'stash' => new StashResource($stash)
@@ -60,9 +66,10 @@ class StashController extends Controller
 
     public function destroy(Stash $stash)
     {
+        $id = $stash->id;
         $stash->delete();
 
-        return response()->json(null, 204);
+        return response()->json([ 'id' => $id ], 204);
     }
 
     public function types()

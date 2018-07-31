@@ -1,7 +1,7 @@
 import * as ActionTypes from "../action-types";
 
 const initialState = {
-  stashes: [],
+  list: [],
 };
 
 const stashes = (state = initialState, { type, payload = null }) => {
@@ -19,15 +19,27 @@ const load = (state, payload) => {
   const { stashes } = payload;
   return {
     ...state,
-    stashes,
+    list: stashes,
   };
 };
 
 const update = (state, payload) => {
   const { stash } = payload;
+
+  const list = state.list.filter(s => s.id !== stash.id).concat(stash);
   return {
     ...state,
-    stashes,
+    list
+  };
+};
+
+const destroy = (state, payload) => {
+  const { id } = payload;
+
+  const list = state.list.filter(stash => stash.id !== id);
+  return {
+    ...state,
+    list
   };
 };
 

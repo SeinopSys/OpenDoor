@@ -109,5 +109,12 @@ return [
     'letters' => 'The :attribute must contain at least one letter.',
     'symbols' => 'The :attribute must contain at least one symbol.',
 
-    'attributes' => json_decode(file_get_contents(public_path('locales/en/validation-attrs.json')), true),
+    'attributes' => [
+        'name' => 'Username',
+        'email' => 'E-Mail Address',
+        'password' => 'Password',
+        'password_confirmation' => 'Password Confirmation',
+        'label' => 'Label',
+        'type' => 'Type'
+    ],
 ];

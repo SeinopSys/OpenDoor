@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Login;
 use App\Http\Requests\Registration;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -33,9 +34,9 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    public function login(Request $request)
+    public function login(Login $request)
     {
-        $credentials = $request->only(['email', 'password']);
+        $credentials = $request->validated();
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['message' => trans('login.errors.invalid_credentials')], 401);

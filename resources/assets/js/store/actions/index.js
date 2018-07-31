@@ -50,3 +50,10 @@ export function stashUpdate(payload){
     payload
   };
 }
+
+export function stashDestroy(payload){
+  return {
+    type: ActionTypes.STASH_DESTROY,
+    payload
+  };
+}

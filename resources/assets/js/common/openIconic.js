@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const OpenIconic = ({ icon, title }) => {
   return (<span className={`oi oi-${icon} sr-hidden`} title={title} aria-hidden="true" />);

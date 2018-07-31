@@ -7,6 +7,8 @@ import {
   CardDeck,
   CardBody,
   CardTitle,
+  CardText,
+  CardFooter,
   Alert,
   Button
 } from "reactstrap";
@@ -55,8 +57,8 @@ class OverviewStashes extends React.Component {
   }
 
   render() {
-    const { t } = this.props;
-    const { isLoading, stashes, responseError } = this.state;
+    const { t, stashes } = this.props;
+    const { isLoading, responseError } = this.state;
 
     return (
       <Row>
@@ -70,35 +72,41 @@ class OverviewStashes extends React.Component {
           })}
           </Alert>
           }
+          {isLoading &&
+          <Alert color="primary">
+            <OpenIconic icon="loop-circular" /> {t("overview:stashes.loading")}
+          </Alert>}
           <CardDeck>
-            {isLoading
-              ?
-              <Card color="primary" className="text-white">
+            {!isLoading &&
+            <Fragment>
+              {stashes.length ?
+                stashes.map(stash => (
+                  <Card key={stash.id}>
+                    <CardBody>
+                      <CardTitle>{stash.label}</CardTitle>
+                    </CardBody>
+                    <CardFooter>
+                      <Button tag={Link} to={"/stashes/edit/" + stash.id} color="primary">
+                        <OpenIconic icon="pencil" /> {t("global:edit")}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))
+                : null
+              }
+              <Card>
                 <CardBody>
-                  <OpenIconic icon="loop-circular" /> {t("overview:stashes.loading")}
+                  <CardTitle>{t("overview:stashes.add_new.title")}</CardTitle>
+                  <CardText>{t("overview:stashes.add_new.body.0")}</CardText>
+                  <CardText>{t("overview:stashes.add_new.body.1")}</CardText>
                 </CardBody>
+                <CardFooter>
+                  <Button tag={Link} to="/stashes/new" color="success">
+                    <OpenIconic icon="plus" /> {t("overview:stashes.add_new.cta")}
+                  </Button>
+                </CardFooter>
               </Card>
-              :
-              <Fragment>
-                {stashes.length ?
-                  stashes.map(stash => (
-                    <Card key={stash.id} color="secondary" className="text-white">
-                      <CardBody>{stash.name}</CardBody>
-                    </Card>
-                  ))
-                  : null
-                }
-                <Card color="success" className="text-white">
-                  <CardBody>
-                    <CardTitle>{t("overview:stashes.add_new.title")}</CardTitle>
-                    <p>{t("overview:stashes.add_new.body.0")}</p>
-                    <p>{t("overview:stashes.add_new.body.1")}</p>
-                    <Button tag={Link} to="/stashes/new" color="dark" className="text-success">
-                      <OpenIconic icon="plus" /> {t("overview:stashes.add_new.cta")}
-                    </Button>
-                  </CardBody>
-                </Card>
-              </Fragment>
+            </Fragment>
             }
           </CardDeck>
         </Col>
@@ -109,7 +117,7 @@ class OverviewStashes extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    stashes: state.stashes,
+    stashes: state.stashes.list,
   };
 };
 

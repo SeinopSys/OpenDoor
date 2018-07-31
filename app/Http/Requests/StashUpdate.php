@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\StashType;
 use App\Stash;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StashStore extends FormRequest
+class StashUpdate extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +26,6 @@ class StashStore extends FormRequest
     {
         return [
             'label' => 'required|string|max:'.Stash::LABEL_MAX_LENGTH,
-            'type' => ['required', 'string', new StashType],
         ];
     }
 }

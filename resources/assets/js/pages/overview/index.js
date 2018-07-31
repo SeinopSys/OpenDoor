@@ -6,6 +6,7 @@ import {
 import { connect } from "react-redux";
 import { translate } from "react-i18next";
 import Stashes from "./_stashes";
+import * as action from "../../store/actions";
 
 const translationNamespaces = [
   "global",
@@ -16,12 +17,20 @@ class Overview extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.dispatch(action.updateTitle(this.props.t("global:nav.overview")));
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(action.updateTitle());
+  }
+
   render() {
-    const { t } = this.props;
+    const { title } = this.props;
     return (
       <Row>
         <Col>
-          <h1>{t("global:nav.overview")}</h1>
+          <h1>{title}</h1>
           <Stashes />
         </Col>
       </Row>
@@ -29,4 +38,10 @@ class Overview extends React.Component {
   }
 }
 
-export default connect()(translate(translationNamespaces)(Overview));
+const mapStateToProps = (state) => (
+  {
+    title: state.nav.title,
+  }
+);
+
+export default connect(mapStateToProps)(translate(translationNamespaces)(Overview));
