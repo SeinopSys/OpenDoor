@@ -13,6 +13,7 @@ const user = {
 
 const initialState = {
   isAuthenticated: false,
+  authenticating: true,
   user
 };
 
@@ -35,6 +36,7 @@ const authLogin = (state, payload) => {
   return {
     ...state,
     isAuthenticated: true,
+    authenticating: false,
     user
   };
 };
@@ -44,6 +46,7 @@ const authUser = (state, payload) => {
   return {
     ...state,
     isAuthenticated: true,
+    authenticating: false,
     user
   };
 };
@@ -53,6 +56,7 @@ const authLogout = (state) => {
   return {
     ...state,
     isAuthenticated: false,
+    authenticating: false,
     user
   };
 };

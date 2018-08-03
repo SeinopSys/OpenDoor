@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import {
   Collapse,
@@ -58,18 +58,20 @@ class Page extends React.Component {
           <span className="d-none d-sm-inline-block brand-name">OpenDoor</span>
         </NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
-        {isAuthenticated
-          ?
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav navbar className="mr-auto">
-              <NavItem>
-                <NavLink to="/">
-                  <OpenIconic icon="dashboard" />
-                  {t("global:nav.overview")}
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <Nav navbar>
+        <Collapse isOpen={this.state.isOpen} navbar>
+          {isAuthenticated &&
+          <Nav navbar>
+            <NavItem>
+              <NavLink to="/">
+                <OpenIconic icon="dashboard" />
+                {t("global:nav.overview")}
+              </NavLink>
+            </NavItem>
+          </Nav>
+          }
+          <Nav navbar className="ml-auto">
+            {isAuthenticated
+              ?
               <Dropdown toggle={this.dropdownToggle} isOpen={this.state.isDropdownOpen} inNavbar>
                 <DropdownToggle nav className="d-flex flex-row align-items-center">
                   <Gravatar email={user.email} size={24} className="rounded" />
@@ -80,26 +82,24 @@ class Page extends React.Component {
                   <DropdownItem tag={NavLogoutLink} />
                 </DropdownMenu>
               </Dropdown>
-            </Nav>
-          </Collapse>
-          :
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav navbar>
-              <NavItem>
-                <NavLink to="/login">
-                  <OpenIconic icon="account-login" />
-                  {t("login:log_in")}
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to="/signup">
-                  <OpenIconic icon="person" />
-                  {t("signup:sign_up")}
-                </NavLink>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        }
+              :
+              <Fragment>
+                <NavItem>
+                  <NavLink to="/login">
+                    <OpenIconic icon="account-login" />
+                    {t("login:log_in")}
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink to="/signup">
+                    <OpenIconic icon="person" />
+                    {t("signup:sign_up")}
+                  </NavLink>
+                </NavItem>
+              </Fragment>
+            }
+          </Nav>
+        </Collapse>
       </Navbar>
     );
   }

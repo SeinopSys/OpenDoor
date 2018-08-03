@@ -1,7 +1,7 @@
 @import '~open-iconic/font/css/open-iconic-bootstrap';
 
 .btn, .dropdown-item, .alert, .card-body {
-  .oi {
+  .oi:not(.oi-alone) {
     margin-right: .7em;
     vertical-align: baseline;
   }

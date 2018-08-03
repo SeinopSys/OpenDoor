@@ -115,6 +115,8 @@ return [
         'password' => 'Jelszó',
         'password_confirmation' => 'Jelszó Megerősítése',
         'label' => 'Leírás',
-        'type' => 'Típus'
+        'type' => 'Típus',
+        'currency' => 'Pénznem',
+        'amount' => 'Mennyiség',
     ],
 ];

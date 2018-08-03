@@ -16,7 +16,7 @@ class StashType implements Rule
      */
     public function passes($attribute, $value)
     {
-        return isset(Stash::STASH_TYPES[$value]);
+        return isset(Stash::TYPES[$value]);
     }
 
     /**

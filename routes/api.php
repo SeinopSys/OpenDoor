@@ -23,3 +23,7 @@ Route::group([ 'prefix' => 'stash' ], function ($router) {
     Route::get('types', 'StashController@types');
 });
 Route::resource('stash', 'StashController');
+
+Route::group([ 'prefix' => 'balance' ], function ($router) {
+    Route::get('currencies', 'BalanceController@currencies');
+});

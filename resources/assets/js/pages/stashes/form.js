@@ -23,12 +23,15 @@ import PropTypes from "prop-types";
 import * as action from "../../store/actions";
 import ConfirmModal from "../../common/modals/confirm";
 import { STASH_LABEL_MAX_LENGTH } from "../../common/constants";
+import FormPage from "../../common/formPage";
+import LoadingAlert from "../../common/loadingAlert";
+import BackButton from "../../common/backButon";
 
 const translationNamespaces = [
   "global", "stashes", "validation-attrs"
 ];
 
-class StashesForm extends React.Component {
+class StashesForm extends FormPage {
   constructor(props) {
     super(props);
 
@@ -37,11 +40,7 @@ class StashesForm extends React.Component {
     this.deleteModal = React.createRef();
 
     this.state = {
-      stash: {
-        id: "",
-        label: "",
-        type: "",
-      },
+      stash: null,
       types: [],
       responseError: {
         isError: false,
@@ -56,66 +55,56 @@ class StashesForm extends React.Component {
       },
       isEditing: !!params.id,
       finished: false,
+      actions: {
+        destroyed: false,
+        stored: false,
+        updated: false,
+      },
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDeleteClick = this.handleDeleteClick.bind(this);
     this.handleDeleteConfirm = this.handleDeleteConfirm.bind(this);
-  }
-
-  setLoading(data, etc){
-    this.setState({
-      loading: {
-        ...this.state.loading,
-        ...data
-      },
-      ...etc
-    });
+    this.goBack = this.goBack.bind(this);
   }
 
   componentDidMount() {
+    const { dispatch, t } = this.props;
+
     this.props.dispatch(StashService.types())
       .then(({ types }) => {
         this.setLoading({ types: false }, { types });
       })
       .catch(() => {
-        this.setState({
-          loading: {
-            ...this.state.loading,
-            types: false,
-          },
-        });
+        this.setLoading({ types: false });
       });
 
-    if (this.state.isEditing){
+    if (!this.state.isEditing) {
+      dispatch(action.updateTitle(t("stashes:form.new_title")));
       this.setState({
-        loading: {
-          ...this.state.loading,
-          stash: true,
+        stash: {
+          label: "",
+          type: "",
         },
       });
-      this.props.dispatch(StashService.show(this.props.match.params.id))
+    }
+    else {
+      this.setLoading({ stash: true });
+      dispatch(StashService.show(this.props.match.params.id))
         .then(({ stash }) => {
+          dispatch(action.updateTitle(t(`stashes:form.edit_title`, { label: stash.label })));
           this.setLoading({ stash: false }, { stash });
         })
         .catch(({ error, statusCode }) => {
-          this.setState({
+          this.setLoading({ stash: false }, {
             responseError: {
               isError: true,
               code: statusCode,
               text: error
             },
-            loading: {
-              ...this.state.loading,
-              stash: false,
-            },
           });
         });
     }
-  }
-
-  componentWillUnmount() {
-    this.props.dispatch(action.updateTitle());
   }
 
   handleSubmit(e) {
@@ -143,8 +132,15 @@ class StashesForm extends React.Component {
     const { isEditing } = this.state;
 
     this.props.dispatch(StashService[isEditing ? "update" : "store"](stash, id))
-      .then(() => {
-        this.setLoading({ save: false }, { finished: true });
+      .then(data => {
+        this.setLoading({ save: false }, {
+          finished: true,
+          stash: data.stash,
+          actions: {
+            stored: !isEditing,
+            updated: isEditing,
+          },
+        });
       })
       .catch(({ error, validationErrors, statusCode }) => {
         let responseError = {};
@@ -171,9 +167,14 @@ class StashesForm extends React.Component {
 
   handleDeleteConfirm() {
     this.setLoading({ destroy: true });
-    this.prop.dispatch(StashService.destroy(this.state.stash.id))
+    this.props.dispatch(StashService.destroy(this.state.stash.id))
       .then(() => {
-        this.setLoading({ destroy: false }, { finished: true });
+        this.setLoading({ destroy: false }, {
+          finished: true,
+          actions: {
+            destroyed: true,
+          },
+        });
       })
       .catch(({ error, statusCode }) => {
         this.setLoading({ destroy: false }, {
@@ -187,28 +188,24 @@ class StashesForm extends React.Component {
   }
 
   render() {
+    const { stash, isEditing } = this.state;
     if (this.state.finished) {
       const { from } = this.props.location.state || { from: { pathname: "/" } };
-      return <Redirect to={from} replace />;
+      const { actions } = this.state;
+      let whereTo = from;
+      if (actions.stored)
+        whereTo = `/stashes/${stash.id}/balance`;
+      return <Redirect to={whereTo} replace />;
     }
 
-    const { t } = this.props;
-    const { loading, isEditing, responseError, stash, types } = this.state;
-    const { label } = this.state.stash;
-    let title;
-    if (isEditing) {
-      title = this.props.t(`stashes:form.edit_title`, { label });
-      if (!label)
-        title = title.replace(/: $/, "");
-    }
-    else title = this.props.t("stashes:form.new_title");
-    this.props.dispatch(action.updateTitle(title));
+    const { t, title } = this.props;
+    const { loading, responseError, types } = this.state;
     const isLoading = loading.save || loading.destroy || loading.types || loading.stash;
 
     return (
       <Row className="justify-content-md-center">
         <Col md="6">
-          <h2>{title}</h2>
+          {loading.stash && <LoadingAlert icon="loop-circular" text={t("stashes:form.loading")} />}
           {responseError.isError &&
           <Alert color="danger">
             <OpenIconic icon="warning" /> {t("overview:stashes.load_error", {
@@ -217,96 +214,102 @@ class StashesForm extends React.Component {
           })}
           </Alert>
           }
-          {loading.stash &&
-          <Alert color="info">
-            <OpenIconic icon="loop-circular" /> {t("stashes:form.loading")}
-          </Alert>
-          }
-
-          <Form onSubmit={this.handleSubmit}>
-            <FormGroup>
-              <CountingLabel
-                input="label"
-                label={t("validation:attributes.label")}
-                current={stash.label ? stash.label.length : 0}
-                max={STASH_LABEL_MAX_LENGTH}
-              />
-              <Input
-                type="text"
-                name="label"
-                id="label"
-                required
-                maxLength={STASH_LABEL_MAX_LENGTH}
-                disabled={isLoading || (isEditing && !stash.id)}
-                value={stash.label}
-                onChange={this.handleChange}
-              />
-              <FormText>
-                {t("stashes:form.text.label", { max: STASH_LABEL_MAX_LENGTH })}
-              </FormText>
-            </FormGroup>
-            <FormGroup>
-              <Label for="type">{t("validation:attributes.type")}</Label>
-              <Input
-                type="select"
-                name="type"
-                id="type"
-                required
-                disabled={isLoading || isEditing}
-                value={stash.type}
-                onChange={this.handleChange}
-              >
-                <option value='' className="d-none">{t("global:select_placeholder")}</option>
-                <optgroup label={t("stashes:form.avail_types")}>
-                  {types.map(type => {
-                    return (
-                      <option key={type} value={type}>{t(`stashes:types.${type}`)}</option>
-                    );
-                  })}
-                </optgroup>
-              </Input>
-              {!loading.types && !types &&
-              <FormFeedback valid={false} className="d-block">
-                <Alert color="info">#TODO</Alert>
-              </FormFeedback>
-              }
-              <FormText className={isEditing ? 'd-none' : null}>
-                {t("stashes:form.text.type")}
-              </FormText>
-            </FormGroup>
-
-            <Row>
-              <Col className="mr-auto">
-                <Button color='success' disabled={isLoading || (isEditing && !stash.id)}>
-                  <OpenIconic icon={isEditing ? "check" : "plus"} />
-                  {loading.save
-                    ? <Fragment>{t("global:" + (isEditing ? "saving" : "creating"))}&hellip;</Fragment>
-                    : t("global:" + (isEditing ? "save" : "create"))
-                  }
-                </Button>
-              </Col>
-              <Col className={isEditing ? "text-right" : "d-none"}>
-                <Button
-                  type="button"
-                  color="danger"
-                  disabled={isLoading || (isEditing && !stash.id)}
-                  onClick={this.handleDeleteClick}
-                >
-                  <OpenIconic icon='trash' />
-                  {loading.destroy
-                    ? <Fragment>{t("global:deleting")}&hellip;</Fragment>
-                    : t("global:delete")
-                  }
-                </Button>
-                <ConfirmModal
-                  ref={this.deleteModal}
-                  title={t("stashes:form.confirm_delete.title", { label: stash.label })}
-                  body={t("stashes:form.confirm_delete.body", { label: stash.label })}
-                  onConfirm={this.handleDeleteConfirm}
+          {stash &&
+          <Fragment>
+            <h2>
+              <BackButton action={this.goBack} /> {title}
+            </h2>
+            <Form onSubmit={this.handleSubmit}>
+              <FormGroup>
+                <CountingLabel
+                  input="label"
+                  label={t("validation:attributes.label")}
+                  current={stash.label ? stash.label.length : 0}
+                  max={STASH_LABEL_MAX_LENGTH}
                 />
-              </Col>
-            </Row>
-          </Form>
+                <Input
+                  type="text"
+                  name="label"
+                  id="label"
+                  required
+                  maxLength={STASH_LABEL_MAX_LENGTH}
+                  disabled={isLoading || (isEditing && !stash.id)}
+                  value={stash.label}
+                  onChange={this.handleChange}
+                />
+                <FormText>
+                  {t("stashes:form.text.label", { max: STASH_LABEL_MAX_LENGTH })}
+                </FormText>
+              </FormGroup>
+              {loading.types
+                ?
+                <LoadingAlert icon="loop-circular" text={t("stashes:form.loading_types")} />
+                :
+                <FormGroup>
+                  <Label for="type">{t("validation:attributes.type")}</Label>
+                  <Input
+                    type="select"
+                    name="type"
+                    id="type"
+                    required
+                    disabled={isLoading || isEditing}
+                    value={stash.type}
+                    onChange={this.handleChange}
+                  >
+                    <option value='' className="d-none">{t("global:select_placeholder")}</option>
+                    <optgroup label={t("stashes:form.avail_types")}>
+                      {types.map(type => {
+                        return (
+                          <option key={type} value={type}>{t(`stashes:types.${type}`)}</option>
+                        );
+                      })}
+                    </optgroup>
+                  </Input>
+                  {!loading.types && !types &&
+                  <FormFeedback valid={false} className="d-block">
+                    <Alert color="info">#TODO</Alert>
+                  </FormFeedback>
+                  }
+                  <FormText className={isEditing ? "d-none" : null}>
+                    {t("stashes:form.text.type")}
+                  </FormText>
+                </FormGroup>
+              }
+
+              <Row>
+                <Col className="mr-auto">
+                  <Button color='success' disabled={isLoading || (isEditing && !stash.id)}>
+                    <OpenIconic icon={isEditing ? "check" : "plus"} />
+                    {loading.save
+                      ? <Fragment>{t("global:" + (isEditing ? "saving" : "creating"))}&hellip;</Fragment>
+                      : t("global:" + (isEditing ? "save" : "create"))
+                    }
+                  </Button>
+                </Col>
+                <Col className={isEditing ? "text-right" : "d-none"}>
+                  <Button
+                    type="button"
+                    color="danger"
+                    disabled={isLoading || (isEditing && !stash.id)}
+                    onClick={this.handleDeleteClick}
+                  >
+                    <OpenIconic icon='trash' />
+                    {loading.destroy
+                      ? <Fragment>{t("global:deleting")}&hellip;</Fragment>
+                      : t("global:delete")
+                    }
+                  </Button>
+                  <ConfirmModal
+                    ref={this.deleteModal}
+                    title={t("stashes:form.confirm_delete.title", { label: stash.label })}
+                    body={t("stashes:form.confirm_delete.body", { label: stash.label })}
+                    onConfirm={this.handleDeleteConfirm}
+                  />
+                </Col>
+              </Row>
+            </Form>
+          </Fragment>
+          }
         </Col>
       </Row>
     );

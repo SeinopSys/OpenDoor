@@ -3,6 +3,7 @@ import Login from "../pages/login";
 import Signup from "../pages/signup";
 import NoMatch from "../pages/noMatch";
 import StashesForm from "../pages/stashes/form";
+import StashBalanceForm from "../pages/stashes/balanceForm";
 
 const routes = [
   // Public
@@ -36,6 +37,12 @@ const routes = [
     exact: true,
     auth: true,
     component: StashesForm
+  },
+  {
+    path: "/stashes/:id/balance",
+    exact: true,
+    auth: true,
+    component: StashBalanceForm
   },
   // 404
   {

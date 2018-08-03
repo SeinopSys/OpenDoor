@@ -27,7 +27,7 @@ class Stash extends Model
 {
     use Uuids;
 
-    const STASH_TYPES = [
+    const TYPES = [
         'cash' => true,
         'bank_account' => true,
     ];

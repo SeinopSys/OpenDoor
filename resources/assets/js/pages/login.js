@@ -99,7 +99,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { t, isAuthenticated, title } = this.props;
+    const { t, isAuthenticated, authenticating, title } = this.props;
     if (isAuthenticated) {
       const { from } = this.props.location.state || { from: { pathname: "/" } };
       return <Redirect to={from} replace />;
@@ -113,7 +113,7 @@ class Login extends React.Component {
     ];
 
     return (
-      <Row className="justify-content-md-center">
+      <Row className={'justify-content-md-center'+(authenticating ? ' d-none' : '')}>
         <Col md="4">
           <PageHeading heading={title} />
 
@@ -173,6 +173,7 @@ Login.propTypes = {
 const mapStateToProps = (state) => (
   {
     isAuthenticated: state.auth.isAuthenticated,
+    authenticating: state.auth.authenticating,
     title: state.nav.title,
   }
 );

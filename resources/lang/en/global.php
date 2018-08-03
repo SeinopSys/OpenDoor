@@ -20,6 +20,8 @@ return [
     'cancel' => 'Cancel',
     'save' => 'Save',
     'saving' => 'Saving',
+    'add' => 'Add',
+    'adding' => 'Adding',
     'create' => 'Create',
     'creating' => 'Creating',
     'select_placeholder' => 'Choose one',
@@ -27,4 +29,5 @@ return [
     'editing' => 'Editing',
     'delete' => 'Delete',
     'deleting' => 'Deleting',
+    'back' => 'Back',
 ];

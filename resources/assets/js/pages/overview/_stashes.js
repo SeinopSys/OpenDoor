@@ -4,19 +4,19 @@ import {
   Row,
   Col,
   Card,
-  CardDeck,
+  CardColumns,
+  CardHeader,
   CardBody,
-  CardTitle,
   CardText,
   CardFooter,
+  CardLink,
   Alert,
-  Button
 } from "reactstrap";
 import { connect } from "react-redux";
 import { translate } from "react-i18next";
 import * as StashService from "../../services/stash";
-import ValidationErrors from "../../common/validationErrors";
 import OpenIconic from "../../common/openIconic";
+import LoadingAlert from "../../common/loadingAlert";
 
 const translationNamespaces = [
   "global", "overview"
@@ -72,43 +72,60 @@ class OverviewStashes extends React.Component {
           })}
           </Alert>
           }
-          {isLoading &&
-          <Alert color="primary">
-            <OpenIconic icon="loop-circular" /> {t("overview:stashes.loading")}
-          </Alert>}
-          <CardDeck>
+          {isLoading && <LoadingAlert icon="loop-circular" text={t("overview:stashes.loading")} />}
+          <CardColumns>
             {!isLoading &&
             <Fragment>
               {stashes.length ?
                 stashes.map(stash => (
                   <Card key={stash.id}>
+                    <CardHeader tag='h5'>
+                      {stash.label}
+                    </CardHeader>
                     <CardBody>
-                      <CardTitle>{stash.label}</CardTitle>
+                      <CardText>
+                        <strong>Type:</strong> {t(`stashes:types.${stash.type}`)}
+                      </CardText>
+                      <CardText>
+                        {stash.balances.length > 0
+                          ? (<ul>
+                            {stash.balances.map(balance => (
+                              <li key={balance.id}>{balance.formatted}</li>
+                            ))}
+                          </ul>)
+                          : <span className="font-italic">{t("overview:stashes.no_balance")}</span>
+                        }
+                      </CardText>
                     </CardBody>
                     <CardFooter>
-                      <Button tag={Link} to={"/stashes/edit/" + stash.id} color="primary">
+                      <CardLink tag={Link} to={`/stashes/${stash.id}/balance`} className="text-success">
+                        <OpenIconic icon="dollar" /> {t("overview:stashes.manage_balance")}
+                      </CardLink>
+                      <CardLink tag={Link} to={`/stashes/edit/${stash.id}`} className="text-primary">
                         <OpenIconic icon="pencil" /> {t("global:edit")}
-                      </Button>
+                      </CardLink>
                     </CardFooter>
                   </Card>
                 ))
                 : null
               }
-              <Card>
+              <Card className="bg-success text-white">
+                <CardHeader tag='h5'>
+                  {t("overview:stashes.add_new.title")}
+                </CardHeader>
                 <CardBody>
-                  <CardTitle>{t("overview:stashes.add_new.title")}</CardTitle>
                   <CardText>{t("overview:stashes.add_new.body.0")}</CardText>
                   <CardText>{t("overview:stashes.add_new.body.1")}</CardText>
                 </CardBody>
-                <CardFooter>
-                  <Button tag={Link} to="/stashes/new" color="success">
+                <CardFooter className="bg-white text-center">
+                  <CardLink tag={Link} to="/stashes/new" className="text-success">
                     <OpenIconic icon="plus" /> {t("overview:stashes.add_new.cta")}
-                  </Button>
+                  </CardLink>
                 </CardFooter>
               </Card>
             </Fragment>
             }
-          </CardDeck>
+          </CardColumns>
         </Col>
       </Row>
     );

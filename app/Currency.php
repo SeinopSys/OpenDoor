@@ -24,4 +24,11 @@ class Currency extends Model
     public $fillable = [
         'id', 'usd_value',
     ];
+
+    public const AVAILABLE = [
+        'USD' => true,
+        'HUF' => true,
+        'EUR' => true,
+        'GBP' => true,
+    ];
 }

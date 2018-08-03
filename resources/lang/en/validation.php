@@ -115,6 +115,8 @@ return [
         'password' => 'Password',
         'password_confirmation' => 'Password Confirmation',
         'label' => 'Label',
-        'type' => 'Type'
+        'type' => 'Type',
+        'currency' => 'Currency',
+        'amount' => 'Amount',
     ],
 ];

@@ -14,7 +14,10 @@ class Main extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { title, authenticating } = this.props;
+
+    if (authenticating)
+      return null;
 
     return (
       <Container>
@@ -42,6 +45,7 @@ Main.propTypes = {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
+    authenticating: state.authenticating,
     title: state.nav.title,
   };
 };

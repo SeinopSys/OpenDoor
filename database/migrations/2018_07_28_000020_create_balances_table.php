@@ -21,6 +21,7 @@ class CreateBalancesTable extends Migration
             $table->timestamps();
 
             $table->primary('id');
+            $table->unique(['stash_id', 'currency_id']);
             $table->foreign('stash_id')->references('id')->on('stashes')->delete('restrict')->update('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->delete('restrict')->update('cascade');
         });
