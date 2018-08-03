@@ -20,6 +20,13 @@ import { translate } from "react-i18next";
 import OpenIconic from "../common/openIconic";
 import ValidationErrors from "../common/validationErrors";
 import * as action from "../store/actions";
+import CountingLabel from "../common/countingLabel";
+import {
+  USERNAME_MAX_LENGTH,
+  USERNAME_MIN_LENGTH,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+} from "../common/constants";
 const translationNamespaces = [
   "login", "validation-attrs",
 ];
@@ -133,11 +140,20 @@ class Signup extends React.Component {
 
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
-              <Label for="name">{t("validation:attributes.name")}</Label>
+              <CountingLabel
+                for="name"
+                current={credentials.name.length}
+                min={USERNAME_MIN_LENGTH}
+                max={USERNAME_MAX_LENGTH}
+                label={t("validation:attributes.name")}
+                required={true}
+              />
               <Input
                 type="text"
                 name="name"
                 id="name"
+                maxLength={USERNAME_MAX_LENGTH}
+                pattern={`^.{${USERNAME_MIN_LENGTH},}`}
                 invalid={validationErrors.has('name')}
                 value={credentials.name}
                 onChange={this.handleChange}
@@ -154,7 +170,7 @@ class Signup extends React.Component {
               </FormFeedback>
               }
               <FormText color="muted">
-                {t("signup:specs.name")}
+                {t("signup:specs.name", { min: USERNAME_MIN_LENGTH, max: USERNAME_MAX_LENGTH })}
               </FormText>
             </FormGroup>
             <FormGroup>
@@ -182,11 +198,18 @@ class Signup extends React.Component {
               </FormText>
             </FormGroup>
             <FormGroup>
-              <Label for="password">{t("validation:attributes.password")}</Label>
+              <CountingLabel
+                for="password"
+                current={credentials.password.length}
+                min={PASSWORD_MIN_LENGTH}
+                label={t("validation:attributes.password")}
+                required={true}
+              />
               <Input
                 type="password"
                 name="password"
                 id="password"
+                pattern={`^.{${PASSWORD_MIN_LENGTH},}`}
                 invalid={validationErrors.has('password')}
                 value={credentials.password}
                 onChange={this.handleChange}
@@ -202,7 +225,7 @@ class Signup extends React.Component {
               </FormFeedback>
               }
               <FormText color="muted">
-                {t("signup:specs.password")}
+                {t("signup:specs.password", { min: PASSWORD_MIN_LENGTH })}
               </FormText>
             </FormGroup>
             <FormGroup>

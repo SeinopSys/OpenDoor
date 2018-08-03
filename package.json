@@ -41,6 +41,7 @@
     "react-i18next": "^7.9.1",
     "react-pusher": "^0.2.0",
     "react-redux": "^5.0.7",
+    "react-required-if": "^1.0.3",
     "react-router-dom": "^4.3.1",
     "reactstrap": "^6.3.1",
     "redux": "^4.0.0",

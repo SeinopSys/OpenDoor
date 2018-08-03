@@ -22,6 +22,7 @@ import CountingLabel from "../../common/countingLabel";
 import PropTypes from "prop-types";
 import * as action from "../../store/actions";
 import ConfirmModal from "../../common/modals/confirm";
+import { STASH_LABEL_MAX_LENGTH } from "../../common/constants";
 
 const translationNamespaces = [
   "global", "stashes", "validation-attrs"
@@ -35,7 +36,6 @@ class StashesForm extends React.Component {
 
     this.deleteModal = React.createRef();
 
-    this.labelMaxLength = 64;
     this.state = {
       stash: {
         id: "",
@@ -229,20 +229,20 @@ class StashesForm extends React.Component {
                 input="label"
                 label={t("validation:attributes.label")}
                 current={stash.label ? stash.label.length : 0}
-                max={this.labelMaxLength}
+                max={STASH_LABEL_MAX_LENGTH}
               />
               <Input
                 type="text"
                 name="label"
                 id="label"
                 required
-                maxLength={this.labelMaxLength}
+                maxLength={STASH_LABEL_MAX_LENGTH}
                 disabled={isLoading || (isEditing && !stash.id)}
                 value={stash.label}
                 onChange={this.handleChange}
               />
               <FormText>
-                {t("stashes:form.text.label", { max: this.labelMaxLength })}
+                {t("stashes:form.text.label", { max: STASH_LABEL_MAX_LENGTH })}
               </FormText>
             </FormGroup>
             <FormGroup>

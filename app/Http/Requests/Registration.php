@@ -33,7 +33,7 @@ class Registration extends FormRequest
                 'required',
                 'confirmed',
                 'string',
-                'min:6',
+                'min:8',
                 'max:300',
                 'case_diff',
                 'numbers',
