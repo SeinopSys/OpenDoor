@@ -86,16 +86,14 @@ class OverviewStashes extends React.Component {
                       <CardText>
                         <strong>Type:</strong> {t(`stashes:types.${stash.type}`)}
                       </CardText>
-                      <CardText>
-                        {stash.balances.length > 0
-                          ? (<ul>
-                            {stash.balances.map(balance => (
-                              <li key={balance.id}>{balance.formatted}</li>
-                            ))}
-                          </ul>)
-                          : <span className="font-italic">{t("overview:stashes.no_balance")}</span>
-                        }
-                      </CardText>
+                      {stash.balances.length > 0
+                        ? (<CardText tag="ul">
+                          {stash.balances.map(balance => (
+                            <li key={balance.id}>{balance.readable}</li>
+                          ))}
+                        </CardText>)
+                        : <CardText className="font-italic">{t("overview:stashes.no_balance")}</CardText>
+                      }
                     </CardBody>
                     <CardFooter>
                       <CardLink tag={Link} to={`/stashes/${stash.id}/balance`} className="text-success">

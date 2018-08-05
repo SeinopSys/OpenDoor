@@ -101,13 +101,14 @@ return [
     'timezone'             => 'The :attribute must be a valid zone.',
     'unique'               => 'The :attribute has already been taken.',
     'uploaded'             => 'The :attribute failed to upload.',
+    'unsupported_currency' => 'A kiválasztott :attribute nem támogatott.',
     'url'                  => 'The :attribute format is invalid.',
 
     // Password Validation Module
-    'case_diff' => 'The :attribute legalább egy kis és nagy betűt kell tartalmaznia.',
-    'numbers' => 'The :attribute legalább egy számot kell tartalmaznia.',
-    'letters' => 'The :attribute legalább egy betűt kell tartalmaznia.',
-    'symbols' => 'The :attribute legalább egy szimbólumot kell tartalmaznia.',
+    'case_diff' => 'A(z) :attribute legalább egy kis és nagy betűt kell tartalmaznia.',
+    'numbers' => 'A(z) :attribute legalább egy számot kell tartalmaznia.',
+    'letters' => 'A(z) :attribute legalább egy betűt kell tartalmaznia.',
+    'symbols' => 'A(z) :attribute legalább egy szimbólumot kell tartalmaznia.',
 
     'attributes' => [
         'name' => 'Felhasználónév',

@@ -22,8 +22,6 @@ export function currencies() {
   );
 }
 
-/*
-
 const catchAll = (reject) => (err => {
   console.log(err);
   const statusCode = err.response.status;
@@ -38,6 +36,21 @@ const catchAll = (reject) => (err => {
   }
   return reject(data);
 });
+
+export function destroy(id) {
+  return dispatch => (
+    new Promise((resolve, reject) => {
+      axios.delete(`/api/balance/${id}`)
+        .then(res => {
+          dispatch(action.stashUpdate(res.data));
+          return resolve(res.data);
+        })
+        .catch(catchAll(reject));
+    })
+  );
+}
+
+/*
 
 export function store(payload) {
   return dispatch => (

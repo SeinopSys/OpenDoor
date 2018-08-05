@@ -10,6 +10,6 @@ return [
     'authenticating' => 'Authenticating',
     'forgot_pw' => 'Forgot your password?',
     'errors' => [
-        'invalid_credentials' => 'The username or password you entered is incorrect.',
+        'invalid_credentials' => 'The specified e-mail address or password is incorrect.',
     ],
 ];

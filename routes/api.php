@@ -21,9 +21,11 @@ Route::group([ 'prefix' => 'auth' ], function ($router) {
 
 Route::group([ 'prefix' => 'stash' ], function ($router) {
     Route::get('types', 'StashController@types');
+    Route::post('{stash}/balance', 'StashController@addBalance');
 });
 Route::resource('stash', 'StashController');
 
 Route::group([ 'prefix' => 'balance' ], function ($router) {
     Route::get('currencies', 'BalanceController@currencies');
+    Route::delete('{balance}', 'BalanceController@destroy');
 });

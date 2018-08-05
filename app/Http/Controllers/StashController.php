@@ -3,6 +3,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Balance;
+use App\Http\Requests\StashAddBalance;
 use App\Http\Requests\StashShow;
 use App\Http\Requests\StashStore;
 use App\Http\Requests\StashUpdate;
@@ -90,13 +92,33 @@ class StashController extends Controller
         $id = $stash->id;
         $stash->delete();
 
-        return response()->json(['id' => $id], 204);
+        return response()->json(['id' => $id]);
     }
 
     public function types()
     {
         return response()->json([
             'types' => array_keys(Stash::TYPES),
+        ]);
+    }
+
+    public function addBalance(StashAddBalance $request, Stash $stash)
+    {
+        $perm = $this->checkPermission($stash);
+        if ($perm !== true) {
+            return $perm;
+        }
+
+        $data = $request->validated();
+
+        $balance = new Balance();
+        $balance->stash_id = $stash->id;
+        $balance->currency = $data['currency'];
+        $balance->amount = $data['amount'];
+        $balance->save();
+
+        return response()->json([
+            'stash' => new StashResource($stash),
         ]);
     }
 }

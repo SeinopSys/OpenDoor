@@ -117,3 +117,16 @@ export function destroy(id) {
     })
   );
 }
+
+export function addBalance(payload, id) {
+  return dispatch => (
+    new Promise((resolve, reject) => {
+      axios.post(`/api/stash/${id}/balance`, payload)
+        .then(res => {
+          dispatch(action.stashUpdate(res.data));
+          resolve(res.data);
+        })
+        .catch(catchAll(reject));
+    })
+  );
+}

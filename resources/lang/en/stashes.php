@@ -20,6 +20,10 @@ return [
         'title' => 'Manage Balances for {{label}}',
         'avail_currencies' => 'Available currencies',
         'add_title' => 'Add New Balance',
+        'delete_modal' => [
+            'title' => 'Delete {{currency}} Balance',
+            'body' => 'Are you sure you want to delete this {{currency}} balance of {{amount}}?',
+        ],
     ],
     'types' => [
         'cash' => 'Cash',

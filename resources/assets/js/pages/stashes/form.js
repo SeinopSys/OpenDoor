@@ -132,10 +132,10 @@ class StashesForm extends FormPage {
     const { isEditing } = this.state;
 
     this.props.dispatch(StashService[isEditing ? "update" : "store"](stash, id))
-      .then(data => {
+      .then(({ stash }) => {
         this.setLoading({ save: false }, {
           finished: true,
-          stash: data.stash,
+          stash,
           actions: {
             stored: !isEditing,
             updated: isEditing,

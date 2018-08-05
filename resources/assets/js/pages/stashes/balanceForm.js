@@ -12,6 +12,7 @@ import {
   Input,
   Button,
   Badge,
+  ListGroup,
 } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -24,6 +25,7 @@ import * as action from "../../store/actions";
 import FormPage from "../../common/formPage";
 import LoadingAlert from "../../common/loadingAlert";
 import BackButton from "../../common/backButon";
+import ConfirmModal from "../../common/modals/confirm";
 
 const translationNamespaces = [
   "global", "stashes", "validation-attrs"
@@ -52,16 +54,18 @@ class StashBalanceForm extends FormPage {
         stash: false,
         currencies: true,
         save: false,
-        destroy: false,
+        destroyBalance: false,
       },
-      isEditing: !!params.id,
+      destroyingBalanceId: null,
       finished: false,
       actions: {
+        newBalance: false,
         updated: false,
       },
+      validationErrors: new ValidationErrors,
     };
     this.handleChange = this.handleChange.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAddBalance = this.handleAddBalance.bind(this);
   }
 
   handleChange(e) {
@@ -75,26 +79,53 @@ class StashBalanceForm extends FormPage {
     });
   }
 
-  handleExistingChange(e, balanceId) {
-    let targetBalance;
-    const { balances } = this.state.stash;
-    const newBalances = [];
-    const { name, value } = e.target;
-    balances.forEach(b => {
-      if (b.id !== balanceId)
-        newBalances.push(b);
-      else newBalances.push({
-        ...b,
-        [name]: value,
+  handleAddBalance(e) {
+    e.preventDefault();
+
+    const { dispatch } = this.props;
+    const { stash, balance } = this.state;
+
+    this.setLoading({ newBalance: true });
+    dispatch(StashService.addBalance(balance, stash.id))
+      .then(({ stash }) => {
+        this.setLoading({ newBalance: false }, { stash });
+      })
+      .catch(({ error, validationErrors, statusCode }) => {
+        let responseError = {};
+        if (!validationErrors) {
+          responseError = {
+            isError: true,
+            code: statusCode,
+            text: error
+          };
+          validationErrors = new ValidationErrors;
+        }
+        this.setLoading({ newBalance: false }, {
+          validationErrors,
+          responseError,
+        });
       });
+  }
+
+  handleDestroyBalance(balanceId) {
+    const { dispatch } = this.props;
+
+    this.setLoading({ destroyBalance: true }, {
+      destroyingBalanceId: balanceId,
     });
-    this.setState({
-      ...this.state,
-      stash: {
-        ...this.state.stash,
-        balances: newBalances,
-      },
-    });
+    dispatch(BalanceService.destroy(balanceId))
+      .then(({ stash }) => {
+        this.setLoading({ destroyBalance: false }, { stash });
+      })
+      .catch(({ error, statusCode }) => {
+        this.setLoading({ destroyBalance: false }, {
+          responseError: {
+            isError: true,
+            code: statusCode,
+            text: error
+          },
+        });
+      });
   }
 
   componentDidMount() {
@@ -134,8 +165,8 @@ class StashBalanceForm extends FormPage {
     }
 
     const { t, title } = this.props;
-    const { loading, isEditing, responseError, currencies, balance } = this.state;
-    const isLoading = loading.save || loading.currencies || loading.stash;
+    const { loading, responseError, currencies, balance, validationErrors, destroyingBalanceId } = this.state;
+    const isLoading = loading.currencies || loading.stash;
     let balances;
     if (stash)
       balances = stash.balances;
@@ -158,44 +189,45 @@ class StashBalanceForm extends FormPage {
             <BackButton action={this.goBack} /> {title}
           </h2>
           }
-          {!isLoading && balances.length > 0 &&
-          <Form onSubmit={this.handleSubmit}>
+          {balances &&
+          <ListGroup className="mb-3">
             {balances.map(b => {
-              const amountId = "amount-" + b.id;
+              const ref = React.createRef();
+              const currency = t(`currencies:${b.currency}`);
               return (
-                <Fragment key={b.id}>
-                  <h3>{t(`currencies:${b.currency}`)}</h3>
-                  <Input type="hidden" name="id[]" value={b.id} />
-                  <FormGroup>
-                    <Label for={amountId}>{t("validation:attributes.currency")}</Label>
-                    <Input
-                      type="number"
-                      name="amount[]"
-                      id={amountId}
-                      min="0"
-                      step="0.01"
-                      value={b.amount}
-                      onChange={e => this.handleExistingChange(e, b.id)}
-                    />
-                  </FormGroup>
-                </Fragment>
+                <Form
+                  key={b.id}
+                  onSubmit={(e) => { e.preventDefault(); ref.current.getWrappedInstance().open(); }}
+                  inline
+                  className="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>{currency}</strong>
+                    <Badge pill color="dark" className="ml-2">{b.readable}</Badge>
+                  </div>
+                  <Button color='link' className="btn-sm text-danger" disabled={loading.destroyBalance}>
+                    <OpenIconic icon="trash" />
+                    {loading.destroyBalance && destroyingBalanceId === b.id
+                      ? <Fragment>{t("global:deleting")}&hellip;</Fragment>
+                      : t("global:delete")
+                    }
+                  </Button>
+                  <ConfirmModal
+                    ref={ref}
+                    title={t('stashes:balance_form.delete_modal.title', { currency })}
+                    body={t('stashes:balance_form.delete_modal.body', { currency, amount: b.readable })}
+                    onConfirm={() => this.handleDestroyBalance(b.id)}
+                  />
+                </Form>
               );
             })}
-
-            <Button color='success' disabled={isLoading}>
-              <OpenIconic icon={isEditing ? "check" : "plus"} />
-              {loading.save
-                ? <Fragment>{t("global:saving")}&hellip;</Fragment>
-                : t("global:save")
-              }
-            </Button>
-          </Form>
+          </ListGroup>
           }
 
+          {!isLoading &&
           <Form onSubmit={this.handleAddBalance}>
             <h3>{t("stashes:balance_form.add_title")}</h3>
             <FormGroup>
-              <Label for="amount">{t("validation:attributes.amount")}</Label>
+              <Label for="value">{t("validation:attributes.amount")}</Label>
               <Input
                 type="number"
                 name="amount"
@@ -207,12 +239,22 @@ class StashBalanceForm extends FormPage {
                 onChange={this.handleChange}
                 required
               />
+              {validationErrors.has("amount") &&
+              <FormFeedback valid={false} className="d-block">
+                {validationErrors.get("amount").map((el, i) => {
+                  return (
+                    <p key={i}>{el}</p>
+                  );
+                })}
+              </FormFeedback>
+              }
             </FormGroup>
             <FormGroup>
-              <Label>{t("validation:attributes.currency")}</Label>
+              <Label for="currency">{t("validation:attributes.currency")}</Label>
               <Input
                 type="select"
                 name="currency"
+                id="currency"
                 disabled={isLoading || !currencies}
                 value={balance.currency}
                 onChange={this.handleChange}
@@ -225,16 +267,26 @@ class StashBalanceForm extends FormPage {
                   ))}
                 </optgroup>
               </Input>
+              {validationErrors.has("currency") &&
+              <FormFeedback valid={false} className="d-block">
+                {validationErrors.get("currency").map((el, i) => {
+                  return (
+                    <p key={i}>{el}</p>
+                  );
+                })}
+              </FormFeedback>
+              }
             </FormGroup>
 
-            <Button color='success' disabled={isLoading}>
+            <Button color='success' disabled={loading.newBalance}>
               <OpenIconic icon="plus" />
-              {loading.save
+              {loading.newBalance
                 ? <Fragment>{t("global:adding")}&hellip;</Fragment>
                 : t("global:add")
               }
             </Button>
           </Form>
+          }
         </Col>
       </Row>
     );

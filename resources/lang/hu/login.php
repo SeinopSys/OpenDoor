@@ -10,6 +10,6 @@ return [
   'authenticating' => 'Azonosítás',
   'forgot_pw' => 'Elfelejtetted a jelszavad?',
     'errors' => [
-        'invalid_credentials' => 'A megadott felhasználónév vagy jelszó hibás.',
+        'invalid_credentials' => 'A megadott e-mail cím vagy jelszó hibás.',
     ],
 ];
