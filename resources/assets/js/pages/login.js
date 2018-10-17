@@ -151,7 +151,7 @@ class Login extends React.Component {
             </FormGroup>
 
             <Button color='primary' disabled={this.state.isLoading}>
-              <OpenIconic icon="key" />
+              <OpenIconic icon="account-login" />
               {this.state.isLoading
                 ? <Fragment>{t("login:authenticating")}&hellip;</Fragment>
                 : t("login:log_in")

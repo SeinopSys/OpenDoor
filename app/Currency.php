@@ -11,7 +11,8 @@ class Currency extends Model
     public $primaryKey = 'code';
 
     public $fillable = [
-        'code', 'usd_value',
+        'code',
+        'usd_value',
     ];
 
     public const AVAILABLE = [
@@ -20,4 +21,9 @@ class Currency extends Model
         'EUR' => true,
         'GBP' => true,
     ];
+
+    public function cacheExpired(): bool
+    {
+        return $this->updated_at->addHours(2)->isPast();
+    }
 }

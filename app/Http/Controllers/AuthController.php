@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Login;
 use App\Http\Requests\Registration;
 use App\Http\Resources\UserResource;
+use App\Util\Core;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -26,7 +27,7 @@ class AuthController extends Controller
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
-        $user->password = password_hash($data['password'], PASSWORD_BCRYPT);
+        $user->password = Core::hashPassword($data['password']);
         $user->save();
 
         $token = auth()->login($user);

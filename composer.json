@@ -5,6 +5,7 @@
     "type": "project",
     "require": {
         "php": "^7.2.5",
+        "ext-pdo_pgsql": "*",
         "barryvdh/laravel-ide-helper": "^2.4",
         "fideloper/proxy": "^4.0",
         "fightbulc/moment": "^1.25.1",
