@@ -9,9 +9,6 @@ trait ISODateSerialization
 {
     protected function asDateTime($value)
     {
-        if (\is_string($value)) {
-            $value = strtotime($value);
-        }
         return new Carbon($value);
     }
 
