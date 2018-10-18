@@ -14,7 +14,8 @@ const user = {
 const initialState = {
   isAuthenticated: false,
   authenticating: true,
-  user
+  user,
+  tokenExpires: null,
 };
 
 const auth = (state = initialState, { type, payload = null }) => {
@@ -31,23 +32,25 @@ const auth = (state = initialState, { type, payload = null }) => {
 };
 
 const authLogin = (state, payload) => {
-  const { access_token, user } = payload;
+  const { access_token, user, expires } = payload;
   setJWT(access_token);
   return {
     ...state,
     isAuthenticated: true,
     authenticating: false,
-    user
+    user,
+    tokenExpires: new Date(expires),
   };
 };
 
 const authUser = (state, payload) => {
-  const { user } = payload;
+  const { user, expires } = payload;
   return {
     ...state,
     isAuthenticated: true,
     authenticating: false,
-    user
+    user,
+    tokenExpires: new Date(expires),
   };
 };
 
@@ -57,7 +60,8 @@ const authLogout = (state) => {
     ...state,
     isAuthenticated: false,
     authenticating: false,
-    user
+    user,
+    tokenExpires: null,
   };
 };
 

@@ -10,7 +10,8 @@ return [
         'toggle' => 'Toggle Navigation',
         'log_out' => 'Log out',
         'log_out_confirm' => 'Are you sure you want to log out?',
-        'overview' => 'Overview'
+        'overview' => 'Overview',
+        'session_expires_in' => 'Session expires in {{time}}',
     ],
     'footer' => [
         'thanks_to' => 'This project would not be as awesome as it is without these resources:'

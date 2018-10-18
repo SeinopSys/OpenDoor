@@ -15,10 +15,12 @@ import {
 import { connect } from "react-redux";
 import NavLink from "./navLink";
 import NavLogoutLink from "./navLogoutLink";
+import RelativeTime from "./relativeTime";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import OpenIconic from "./openIconic";
 import Gravatar from "react-gravatar";
+import { APP_NAME } from "./constants";
 
 const translationNamespaces = [
   "login", "signup", "global",
@@ -49,13 +51,13 @@ class Page extends React.Component {
   }
 
   render() {
-    const { t, isAuthenticated, user } = this.props;
+    const { t, isAuthenticated, user, tokenExpires } = this.props;
 
     return (
       <Navbar expand="sm" light>
         <NavbarBrand tag={Link} to='/'>
           <img src="/img/logo.svg" className="d-inline-block align-top brand-logo" alt="OpenDoor logo" />
-          <span className="d-none d-sm-inline-block brand-name">OpenDoor</span>
+          <span className="d-none d-sm-inline-block brand-name">{APP_NAME}</span>
         </NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
@@ -79,6 +81,13 @@ class Page extends React.Component {
                   <OpenIconic icon="caret-bottom" />
                 </DropdownToggle>
                 <DropdownMenu>
+                  <DropdownItem header>
+                    <RelativeTime
+                      translation={time => t("global:nav.session_expires_in", { time })}
+                      date={tokenExpires}
+                      interval={1000}>
+                    </RelativeTime>
+                  </DropdownItem>
                   <DropdownItem tag={NavLogoutLink} />
                 </DropdownMenu>
               </Dropdown>
@@ -110,12 +119,10 @@ Page.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
-
-const mapStateToProps = state => {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user,
-  };
-};
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user,
+  tokenExpires: state.auth.tokenExpires,
+});
 
 export default connect(mapStateToProps)(translate(translationNamespaces)(Page));

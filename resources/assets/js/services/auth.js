@@ -79,7 +79,6 @@ export function userInfo() {
 
 export const JWT_LS_KEY = "jwt_token";
 export const setJWT = token => {
-  console.warn('TOKEN SET', token);
   localStorage.setItem(JWT_LS_KEY, token);
   setAuthorizationHeader(token);
 };

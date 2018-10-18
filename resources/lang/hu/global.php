@@ -11,7 +11,8 @@ return [
         'toggle' => 'Navigáció Kapcsoló',
         'log_out' => 'Kijelentkezés',
         'log_out_confirm' => 'Biztosan ki akarsz jelentkezni?',
-        'overview' => 'Áttekintés'
+        'overview' => 'Áttekintés',
+        'session_expires_in' => 'Munkamenet {{time}} múlva lejár',
     ],
     'footer' => [
         'thanks_to' => 'Ez a projekt közel sem lenne olyan jó, amilyen, ha ők nem lennének:'

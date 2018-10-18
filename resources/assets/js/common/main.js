@@ -6,7 +6,7 @@ import GithubCorner from "./githubCorner";
 import { Container } from "reactstrap";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
-import { APP_NAME } from "../constants";
+import { APP_NAME } from "./constants";
 
 class Main extends React.Component {
   constructor(props) {

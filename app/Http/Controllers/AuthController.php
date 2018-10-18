@@ -6,6 +6,7 @@ use App\Http\Requests\Login;
 use App\Http\Requests\Registration;
 use App\Http\Resources\UserResource;
 use App\Util\Core;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\User;
 
@@ -77,6 +78,7 @@ class AuthController extends Controller
     {
         return response()->json([
             'user' => new UserResource(auth()->user()),
+            'expires' => Core::getAuthTokenExpiry(),
         ]);
     }
 
@@ -85,7 +87,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * MINUTE_IN_SECONDS,
+            'expires' => Core::getAuthTokenExpiry(),
             'user' => new UserResource(auth()->user()),
         ]);
     }

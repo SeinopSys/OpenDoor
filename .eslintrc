@@ -51,5 +51,11 @@
             "jsx": true,
             "modules": true
         }
+    },
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "16.5.2"
+        }
     }
 }
