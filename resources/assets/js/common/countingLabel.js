@@ -11,7 +11,6 @@ class CountingLabel extends React.Component {
   render() {
     const { label, current, min, max, input, required, ...rest } = this.props;
 
-
     const [ hasMax, hasMin ] = [!!max, !!min];
     let hideCounter = false;
     let color = 'success';

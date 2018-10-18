@@ -18,7 +18,7 @@ class CreateBalancesTable extends Migration
             $table->uuid('stash_id');
             $table->decimal('amount', 18, 4);
             $table->char('currency', 3);
-            $table->timestamps();
+            $table->timestampsTz();
 
             $table->primary('id');
             $table->unique(['stash_id', 'currency']);

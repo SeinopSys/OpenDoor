@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stash extends Model
 {
-    use Uuids;
+    use Uuids, ISODateSerialization;
 
     const TYPES = [
         'cash' => true,
@@ -18,11 +18,13 @@ class Stash extends Model
 
     public $fillable = ['label'];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function balances(){
+    public function balances()
+    {
         return $this->hasMany(Balance::class);
     }
 }

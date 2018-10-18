@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Currency extends Model
 {
+    use ISODateSerialization;
+
     public $incrementing = false;
 
     public $primaryKey = 'code';
@@ -22,6 +24,13 @@ class Currency extends Model
         'GBP' => true,
     ];
 
+    /**
+     * Cached currencies expire after 2 hours
+     *
+     * This function checks whether the data needs updating
+     *
+     * @return bool
+     */
     public function cacheExpired(): bool
     {
         return $this->updated_at->addHours(2)->isPast();

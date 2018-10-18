@@ -25,7 +25,8 @@ class BalanceController extends Controller
         return true;
     }
 
-    public function currencies(){
+    public function currencies()
+    {
         $currencies = collect(array_keys(Currency::AVAILABLE));
 
         return response()->json([
@@ -33,17 +34,18 @@ class BalanceController extends Controller
         ]);
     }
 
-    public function destroy(Balance $balance){
+    public function destroy(Balance $balance)
+    {
         $perm = $this->checkPermission($balance);
         if ($perm !== true) {
             return $perm;
         }
 
-        $stash_id = $balance->stash_id;
+        $stashId = $balance->stash_id;
         $balance->delete();
 
         return response()->json([
-            'stash' => new StashResource(Stash::find($stash_id)->first()),
+            'stash' => new StashResource(Stash::find($stashId)->first()),
         ]);
     }
 }

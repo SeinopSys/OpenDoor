@@ -6,7 +6,6 @@ import {
   Alert,
   Form,
   FormGroup,
-  FormText,
   FormFeedback,
   Label,
   Input,
@@ -200,11 +199,11 @@ class StashBalanceForm extends FormPage {
                   onSubmit={(e) => { e.preventDefault(); ref.current.getWrappedInstance().open(); }}
                   inline
                   className="list-group-item d-flex justify-content-between align-items-center">
-                  <div>
+                  <div className="d-flex align-items-center">
                     <strong>{currency}</strong>
                     <Badge pill color="dark" className="ml-2">{b.readable}</Badge>
                   </div>
-                  <Button color='link' className="btn-sm text-danger" disabled={loading.destroyBalance}>
+                  <Button color="link" className="btn-sm text-danger" disabled={loading.destroyBalance}>
                     <OpenIconic icon="trash" />
                     {loading.destroyBalance && destroyingBalanceId === b.id
                       ? <Fragment>{t("global:deleting")}&hellip;</Fragment>

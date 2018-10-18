@@ -4,18 +4,18 @@
 namespace App\Util;
 
 use App\Currency;
-Use OceanApplications\currencylayer;
+use OceanApplications\currencylayer;
 
 class CurrencyHelper
 {
-    static function cachedCurrency(string $id): Currency
+    public static function cachedCurrency(string $id): Currency
     {
         /** @var $currency Currency */
         $currency = Currency::find($id);
-        $empty = empty($currency);
-        if ($empty || $currency->cacheExpired()) {
+        $cache_miss = empty($currency);
+        if ($cache_miss || $currency->cacheExpired()) {
             $value = self::fetchValue([$id]);
-            if (!$empty) {
+            if (!$cache_miss) {
                 $currency = new Currency();
             }
             $currency->code = $id;
@@ -26,19 +26,10 @@ class CurrencyHelper
     }
 
     /**
-     * @param string $code
-     * @param int|double $value
-     */
-    static function cacheCurrency(string $code, $value)
-    {
-        // TODO
-    }
-
-    /**
      * @param string[] $currency_codes
      * @return array
      */
-    static function fetchValue(array $currency_codes)
+    public static function fetchValue(array $currency_codes)
     {
         $currencylayer = new currencylayer\client(env('CURRENCY_LAYER_API_KEY'));
         $results = $currencylayer->source('USD')->currencies(implode(',', $currency_codes))->live();

@@ -18,7 +18,7 @@ class CreateStashesTable extends Migration
             $table->uuid('user_id');
             $table->string('label', 140);
             $table->string('type', 32)->nullable();
-            $table->timestamps();
+            $table->timestampsTz();
 
             $table->primary('id');
             $table->foreign('user_id')->references('id')->on('users')->delete('cascade')->update('cascade');

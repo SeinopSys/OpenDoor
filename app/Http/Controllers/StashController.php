@@ -13,8 +13,6 @@ use App\Stash;
 use App\User;
 use Illuminate\Http\Request;
 
-sleep(1);
-
 class StashController extends Controller
 {
     public function __construct()

@@ -11,7 +11,6 @@ import {
   Label,
   Input,
   Button,
-  Badge,
 } from "reactstrap";
 import { connect } from "react-redux";
 import { translate } from "react-i18next";
@@ -225,6 +224,8 @@ class StashesForm extends FormPage {
                   input="label"
                   label={t("validation:attributes.label")}
                   current={stash.label ? stash.label.length : 0}
+                  required={true}
+                  min={1}
                   max={STASH_LABEL_MAX_LENGTH}
                 />
                 <Input

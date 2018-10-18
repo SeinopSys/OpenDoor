@@ -2,19 +2,19 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Transaction extends Model
+class Transaction extends BaseModel
 {
-	use Uuids;
+    use Uuids, ISODateSerialization;
 
     public $incrementing = false;
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function balance(){
+    public function balance()
+    {
         return $this->belongsTo(Balance::class);
     }
 }
