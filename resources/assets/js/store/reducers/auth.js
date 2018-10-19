@@ -1,4 +1,4 @@
-import * as ActionTypes from "../action-types";
+import * as ActionTypes from "../actions";
 import { setJWT, removeJWT } from '../../services/auth';
 
 const user = {
@@ -16,19 +16,6 @@ const initialState = {
   authenticating: true,
   user,
   tokenExpires: null,
-};
-
-const auth = (state = initialState, { type, payload = null }) => {
-  switch (type) {
-    case ActionTypes.AUTH_LOGIN:
-      return authLogin(state, payload);
-    case ActionTypes.AUTH_USER:
-      return authUser(state, payload);
-    case ActionTypes.AUTH_LOGOUT:
-      return authLogout(state);
-    default:
-      return state;
-  }
 };
 
 const authLogin = (state, payload) => {
@@ -63,6 +50,19 @@ const authLogout = (state) => {
     user,
     tokenExpires: null,
   };
+};
+
+const auth = (state = initialState, { type, payload = null }) => {
+  switch (type) {
+    case ActionTypes.AUTH_LOGIN:
+      return authLogin(state, payload);
+    case ActionTypes.AUTH_USER:
+      return authUser(state, payload);
+    case ActionTypes.AUTH_LOGOUT:
+      return authLogout(state);
+    default:
+      return state;
+  }
 };
 
 export default auth;

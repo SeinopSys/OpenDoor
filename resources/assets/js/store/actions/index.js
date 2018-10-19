@@ -1,9 +1,16 @@
-import * as ActionTypes from "../action-types";
+export const AUTH_LOGIN = "AUTH_LOGIN";
+export const AUTH_USER = "AUTH_USER";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";
+export const STASHES_LOAD = "STASHES_LOAD";
+export const STASH_STORE = "STASH_STORE";
+export const STASH_UPDATE = "STASH_UPDATE";
+export const STASH_DESTROY = "STASH_DESTROY";
+export const TITLE_UPDATE = "TITLE_UPDATE";
 
 // Nav
 export function updateTitle(title = null){
   return {
-    type: ActionTypes.TITLE_UPDATE,
+    type: TITLE_UPDATE,
     payload: { title },
   };
 }
@@ -11,49 +18,49 @@ export function updateTitle(title = null){
 // Auth
 export function authLogin(payload) {
   return {
-    type: ActionTypes.AUTH_LOGIN,
+    type: AUTH_LOGIN,
     payload
   };
 }
 
 export function authUser(payload) {
   return {
-    type: ActionTypes.AUTH_USER,
+    type: AUTH_USER,
     payload
   };
 }
 
 export function authLogout() {
   return {
-    type: ActionTypes.AUTH_LOGOUT
+    type: AUTH_LOGOUT
   };
 }
 
 // Stashes
 export function stashesLoad(payload){
   return {
-    type: ActionTypes.STASHES_LOAD,
+    type: STASHES_LOAD,
     payload
   };
 }
 
 export function stashStore(payload){
   return {
-    type: ActionTypes.STASH_STORE,
+    type: STASH_STORE,
     payload
   };
 }
 
 export function stashUpdate(payload){
   return {
-    type: ActionTypes.STASH_UPDATE,
+    type: STASH_UPDATE,
     payload
   };
 }
 
 export function stashDestroy(payload){
   return {
-    type: ActionTypes.STASH_DESTROY,
+    type: STASH_DESTROY,
     payload
   };
 }

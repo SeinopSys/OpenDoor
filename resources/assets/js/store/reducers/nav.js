@@ -1,4 +1,4 @@
-import * as ActionTypes from "../action-types";
+import * as ActionTypes from "../actions";
 
 const initialState = {
   title: '',
@@ -7,17 +7,14 @@ const initialState = {
 const nav = (state = initialState, { type, payload = null }) => {
   switch (type) {
     case ActionTypes.TITLE_UPDATE:
-      return updateTitle(state, payload);
+      return updateTitle(payload.title);
     default:
       return state;
   }
 };
 
-const updateTitle = (state, payload) => {
-  const { title } = payload;
-  return {
-    title: typeof title === 'string' ? title : '',
-  };
-};
+const updateTitle = title => ({
+  title: typeof title === 'string' ? title : '',
+});
 
 export default nav;

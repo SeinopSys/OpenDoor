@@ -15,12 +15,14 @@ import {
 import { connect } from "react-redux";
 import NavLink from "./navLink";
 import NavLogoutLink from "./navLogoutLink";
+import NavExtendSessionLink from "./navExtendSessionLink";
 import RelativeTime from "./relativeTime";
 import PropTypes from "prop-types";
 import { translate } from "react-i18next";
 import OpenIconic from "./openIconic";
 import Gravatar from "react-gravatar";
-import { APP_NAME } from "./constants";
+import { APP_NAME, LANGS } from "./constants";
+import FlagIcon from "./flagIcon";
 
 const translationNamespaces = [
   "login", "signup", "global",
@@ -32,9 +34,11 @@ class Page extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
+    this.langDropdownToggle = this.langDropdownToggle.bind(this);
     this.state = {
       isOpen: false,
       isDropdownOpen: false,
+      isLangDropdownOpen: false,
     };
   }
 
@@ -47,6 +51,12 @@ class Page extends React.Component {
   dropdownToggle() {
     this.setState({
       isDropdownOpen: !this.state.isDropdownOpen
+    });
+  }
+
+  langDropdownToggle() {
+    this.setState({
+      isLangDropdownOpen: !this.state.isLangDropdownOpen
     });
   }
 
@@ -74,23 +84,41 @@ class Page extends React.Component {
           <Nav navbar className="ml-auto">
             {isAuthenticated
               ?
-              <Dropdown toggle={this.dropdownToggle} isOpen={this.state.isDropdownOpen} inNavbar>
-                <DropdownToggle nav className="d-flex flex-row align-items-center">
-                  <Gravatar email={user.email} size={24} className="rounded" />
-                  <span className="p-2">{user.name}</span>
-                  <OpenIconic icon="caret-bottom" />
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem header>
-                    <RelativeTime
-                      translation={time => t("global:nav.session_expires_in", { time })}
-                      date={tokenExpires}
-                      interval={1000}>
-                    </RelativeTime>
-                  </DropdownItem>
-                  <DropdownItem tag={NavLogoutLink} />
-                </DropdownMenu>
-              </Dropdown>
+              <Fragment>
+                <Dropdown toggle={this.langDropdownToggle} isOpen={this.state.isLangDropdownOpen} inNavbar>
+                  <DropdownToggle nav className="d-flex flex-row align-items-center">
+                    <span className="p-2">
+                      <OpenIconic icon="globe" /> {t("global:nav.language")}
+                    </span>
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {Object.keys(LANGS).map(lang => (
+                      <DropdownItem key={lang}>
+                        <FlagIcon country={lang} />
+                        {LANGS[lang]}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+                <Dropdown toggle={this.dropdownToggle} isOpen={this.state.isDropdownOpen} inNavbar>
+                  <DropdownToggle nav className="d-flex flex-row align-items-center">
+                    <Gravatar email={user.email} size={24} className="rounded" default="mp" />
+                    <span className="p-2">{user.name}</span>
+                    <OpenIconic icon="caret-bottom" />
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem header>
+                      <RelativeTime
+                        translation={time => t("global:nav.session_expires_in", { time })}
+                        date={tokenExpires}
+                        interval={1000}>
+                      </RelativeTime>
+                    </DropdownItem>
+                    <DropdownItem tag={NavExtendSessionLink} />
+                    <DropdownItem tag={NavLogoutLink} />
+                  </DropdownMenu>
+                </Dropdown>
+              </Fragment>
               :
               <Fragment>
                 <NavItem>

@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { reactI18nextModule } from 'react-i18next';
-import languageBundle from '@kirschbaum-development/laravel-translations-loader!@kirschbaum-development/laravel-translations-loader';
+import languageBundle from '@kirschbaum-development/laravel-translations-loader/php?parameters={{ $1 }}!@kirschbaum-development/laravel-translations-loader';
 
 const lng = document.documentElement.lang;
 

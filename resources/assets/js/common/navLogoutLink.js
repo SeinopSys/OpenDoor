@@ -5,6 +5,7 @@ import { translate } from 'react-i18next';
 import * as actions from "../store/actions";
 import { connect } from "react-redux";
 import OpenIconic from "./openIconic";
+import { compose } from "recompose";
 
 const translationNamespaces = [
   "global",
@@ -32,7 +33,7 @@ class NavLogoutLink extends React.Component {
 
     return (
       <Fragment>
-        <DropdownItem href="#" onClick={this.handleClick}>
+        <DropdownItem onClick={this.handleClick}>
           <OpenIconic icon="account-logout" /> {t("global:nav.log_out")}
         </DropdownItem>
         <ConfirmModal ref={this.modal} body={t("global:nav.log_out_confirm")} onConfirm={this.handleConfirm} />
@@ -47,4 +48,8 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(translate(translationNamespaces, { withRef: true })(NavLogoutLink));
+const enhance = compose(
+  connect(mapStateToProps),
+  translate(translationNamespaces, { withRef: true }),
+);
+export default enhance(NavLogoutLink);

@@ -54,9 +54,23 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth()->logout(true);
 
         return response()->json(['message' => 'Successfully signed out']);
+    }
+
+    /**
+     * Extend the session by refreshing the token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function extend()
+    {
+        $user = auth()->user();
+        auth()->invalidate(true);
+        $newToken = auth()->login($user);
+
+        return $this->respondWithToken($newToken);
     }
 
     /**
@@ -86,7 +100,6 @@ class AuthController extends Controller
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
             'expires' => Core::getAuthTokenExpiry(),
             'user' => new UserResource(auth()->user()),
         ]);

@@ -8,6 +8,7 @@ const OpenIconic = ({ icon, title, alone }) => {
 OpenIconic.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string,
+  alone: PropTypes.bool,
 };
 
 export default OpenIconic;

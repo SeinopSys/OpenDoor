@@ -12,6 +12,8 @@ return [
         'log_out_confirm' => 'Are you sure you want to log out?',
         'overview' => 'Overview',
         'session_expires_in' => 'Session expires in {{time}}',
+        'extend' => 'Extend',
+        'language' => 'Language',
     ],
     'footer' => [
         'thanks_to' => 'This project would not be as awesome as it is without these resources:'
@@ -28,6 +30,7 @@ return [
     'select_placeholder' => 'Choose one',
     'edit' => 'Edit',
     'editing' => 'Editing',
+    'manage' => 'Manage',
     'delete' => 'Delete',
     'deleting' => 'Deleting',
     'back' => 'Back',

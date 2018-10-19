@@ -8,6 +8,7 @@ if (mix.inProduction()) {
 
 mix
   .copy("node_modules/open-iconic/font/fonts", "public/fonts")
+  .copy("node_modules/flag-icon-css/flags", "public/img/flags")
   .react("resources/assets/js/app.js", "public/js").eslint({
     fix: false,
     cache: false,

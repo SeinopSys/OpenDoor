@@ -7,10 +7,6 @@ class NoMatch extends React.Component {
     this.props.dispatch(action.updateTitle('404'));
   }
 
-  componentWillUnmount(){
-    this.props.dispatch(action.updateTitle());
-  }
-
   render() {
     return <h1>404</h1>;
   }

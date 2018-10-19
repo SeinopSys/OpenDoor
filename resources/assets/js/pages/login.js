@@ -18,6 +18,7 @@ import { translate } from "react-i18next";
 import OpenIconic from "../common/openIconic";
 import ValidationErrors from "../common/validationErrors";
 import * as action from "../store/actions";
+import { compose } from "recompose";
 
 const translationNamespaces = [
   "login", "validation-attrs",
@@ -92,10 +93,6 @@ class Login extends React.Component {
       isLoading: false
     });
     this.props.dispatch(action.updateTitle(this.props.t("login:log_in")));
-  }
-
-  componentWillUnmount(){
-    this.props.dispatch(action.updateTitle());
   }
 
   render() {
@@ -178,4 +175,8 @@ const mapStateToProps = (state) => (
   }
 );
 
-export default connect(mapStateToProps)(translate(translationNamespaces)(Login));
+const enhancer = compose(
+  connect(mapStateToProps),
+  translate(translationNamespaces),
+);
+export default enhancer(Login);

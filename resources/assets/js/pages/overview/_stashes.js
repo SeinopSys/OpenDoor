@@ -96,11 +96,11 @@ class OverviewStashes extends React.Component {
                       }
                     </CardBody>
                     <CardFooter>
-                      <CardLink tag={Link} to={`/stashes/${stash.id}/balance`} className="text-success">
+                      <CardLink tag={Link} to={`/stashes/${stash.id}/balance`} className="text-primary">
                         <OpenIconic icon="dollar" /> {t("overview:stashes.manage_balance")}
                       </CardLink>
                       <CardLink tag={Link} to={`/stashes/edit/${stash.id}`} className="text-primary">
-                        <OpenIconic icon="pencil" /> {t("global:edit")}
+                        <OpenIconic icon="pencil" /> {t("global:manage")}
                       </CardLink>
                     </CardFooter>
                   </Card>

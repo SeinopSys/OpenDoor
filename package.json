@@ -22,6 +22,7 @@
     "eslint": "^5.7.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-react": "^7.11.1",
+    "flag-icon-css": "^3.2.0",
     "i18next": "^11.9.1",
     "jquery": "^3.2",
     "js-cookie": "^2.2.0",
@@ -45,9 +46,9 @@
     "react-required-if": "^1.0.3",
     "react-router-dom": "^4.3.1",
     "reactstrap": "^6.5.0",
+    "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^5.10.0",
     "redux-reactstrap-modal": "^1.1.2",
     "redux-thunk": "^2.3.0",
     "reset-css": "^4.0.1"

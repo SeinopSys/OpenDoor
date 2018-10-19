@@ -27,6 +27,7 @@ import {
   PASSWORD_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
 } from "../common/constants";
+import { compose } from "recompose";
 const translationNamespaces = [
   "login", "validation-attrs",
 ];
@@ -202,6 +203,7 @@ class Signup extends React.Component {
                 for="password"
                 current={credentials.password.length}
                 min={PASSWORD_MIN_LENGTH}
+                max={PASSWORD_MAX_LENGTH}
                 label={t("validation:attributes.password")}
                 required={true}
               />
@@ -214,6 +216,7 @@ class Signup extends React.Component {
                 value={credentials.password}
                 onChange={this.handleChange}
                 required
+                maxLength={PASSWORD_MAX_LENGTH}
               />
               {validationErrors.has('password') &&
               <FormFeedback valid={false}>
@@ -238,6 +241,7 @@ class Signup extends React.Component {
                 value={credentials.password_confirmation}
                 onChange={this.handleChange}
                 required
+                maxLength={PASSWORD_MAX_LENGTH}
               />
               {passwordsDiffer &&
               <FormFeedback valid={false} className="d-block">
@@ -271,4 +275,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(translate(translationNamespaces)(Signup));
+const enhancer = compose(
+  connect(mapStateToProps),
+  translate(translationNamespaces),
+);
+export default enhancer(Signup);

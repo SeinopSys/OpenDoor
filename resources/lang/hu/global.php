@@ -13,6 +13,8 @@ return [
         'log_out_confirm' => 'Biztosan ki akarsz jelentkezni?',
         'overview' => 'Áttekintés',
         'session_expires_in' => 'Munkamenet {{time}} múlva lejár',
+        'extend' => 'Hosszabbítás',
+        'language' => 'Nyelv',
     ],
     'footer' => [
         'thanks_to' => 'Ez a projekt közel sem lenne olyan jó, amilyen, ha ők nem lennének:'
@@ -27,6 +29,7 @@ return [
     'select_placeholder' => 'Válassz egyet',
     'edit' => 'Szerkeszt',
     'editing' => 'Szerkesztés',
+    'manage' => 'Kezelés',
     'delete' => 'Töröl',
     'deleting' => 'Törlés',
 ];

@@ -76,6 +76,31 @@ export function userInfo() {
   );
 }
 
+export function extendSession() {
+  return dispatch => (
+    new Promise((resolve, reject) => {
+      axios.post("/api/auth/extend")
+        .then(res => {
+          dispatch(action.authLogin(res.data));
+          return resolve();
+        })
+        .catch(err => {
+          const statusCode = err.response.status;
+          const data = {
+            error: null,
+            statusCode,
+          };
+          if (statusCode === 401 || statusCode === 422) {
+            data.error = err.response.data.message;
+            if (responseIsValidationError(data.error))
+              data.validationErrors = new ValidationErrors(err.response.data.errors);
+          }
+          return reject(data);
+        });
+    })
+  );
+}
+
 
 export const JWT_LS_KEY = "jwt_token";
 export const setJWT = token => {
@@ -84,11 +109,14 @@ export const setJWT = token => {
 };
 export const getJWT = () => localStorage.getItem(JWT_LS_KEY);
 export const removeJWT = () => {
-  console.warn("TOKEN REMOVED");
   localStorage.removeItem(JWT_LS_KEY);
+  clearAuthorizationHeader();
 };
 export const setAuthorizationHeader = (token) => {
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+};
+export const clearAuthorizationHeader = () => {
+  delete axios.defaults.headers.common.Authorization;
 };
 const authCheck = () => {
   const jwtToken = getJWT();
@@ -107,8 +135,7 @@ export function validateToken() {
           return resolve();
         })
         .catch(() => {
-          //dispatch(action.authLogout());
-          return;
+          dispatch(action.authLogout());
         });
     });
   };

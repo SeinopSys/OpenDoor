@@ -21,10 +21,6 @@ class Overview extends React.Component {
     this.props.dispatch(action.updateTitle(this.props.t("global:nav.overview")));
   }
 
-  componentWillUnmount() {
-    this.props.dispatch(action.updateTitle());
-  }
-
   render() {
     const { title } = this.props;
     return (
